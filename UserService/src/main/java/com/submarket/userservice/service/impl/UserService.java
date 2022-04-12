@@ -6,35 +6,68 @@ import com.submarket.userservice.jpa.entity.UserEntity;
 import com.submarket.userservice.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.config.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service("UserService")
 @Slf4j
 public class UserService implements IUserService {
     private UserRepository userRepository;
+    private ModelMapper modelMapper;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, ModelMapper modelMapper, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
+    //####################################### 회원가입 #######################################//
     @Override
     public UserDTO createUser(UserDTO pDTO) throws Exception {
         log.info(this.getClass().getName() + ".createUser Start");
 
-        pDTO.setUserPassword("EncPassword");
+        pDTO.setUserPassword(passwordEncoder.encode(pDTO.getUserPassword()));
         pDTO.setUserStatus(1);
 
-        ModelMapper mapper = new ModelMapper();
-        mapper.getConfiguration().setFieldAccessLevel(Configuration.AccessLevel.PRIVATE)
-                .setFieldMatchingEnabled(true);
-
-        UserEntity pEntity = mapper.map(pDTO, UserEntity.class);
+        UserEntity pEntity = modelMapper.map(pDTO, UserEntity.class);
 
         userRepository.save(pEntity);
 
         return null;
+    }
+
+    //####################################### 사용자 정보 조회 By User ID #######################################//
+    @Override
+    public UserDTO getUserDetailsByUserId(String userId) {
+        UserEntity rEntity = userRepository.findByUserId(userId);
+
+        if (rEntity == null) {
+            throw new UsernameNotFoundException(userId);
+        }
+
+        UserDTO rDTO = new ModelMapper().map(rEntity, UserDTO.class);
+        return rDTO;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        log.info("username : " + userId);
+        UserEntity rEntity = userRepository.findByUserId(userId);
+
+        if (rEntity == null) {
+            throw new UsernameNotFoundException(userId);
+        }
+
+        return new User(rEntity.getUserId(), rEntity.getUserPassword(),
+                true, true, true, true,
+                new ArrayList<>());
     }
 }
