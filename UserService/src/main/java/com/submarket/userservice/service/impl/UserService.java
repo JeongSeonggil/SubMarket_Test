@@ -3,6 +3,7 @@ package com.submarket.userservice.service.impl;
 import com.submarket.userservice.dto.UserDTO;
 import com.submarket.userservice.jpa.UserRepository;
 import com.submarket.userservice.jpa.entity.UserEntity;
+import com.submarket.userservice.mapper.UserMapper;
 import com.submarket.userservice.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -19,29 +20,30 @@ import java.util.ArrayList;
 @Slf4j
 public class UserService implements IUserService {
     private UserRepository userRepository;
-    private ModelMapper modelMapper;
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, ModelMapper modelMapper, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
     //####################################### 회원가입 #######################################//
+
     @Override
     public UserDTO createUser(UserDTO pDTO) throws Exception {
-        log.info(this.getClass().getName() + ".createUser Start");
+        log.info("-------------->  " + this.getClass().getName() + ".createUser Start !");
 
         pDTO.setUserPassword(passwordEncoder.encode(pDTO.getUserPassword()));
         pDTO.setUserStatus(1);
 
-        UserEntity pEntity = modelMapper.map(pDTO, UserEntity.class);
-
+        UserEntity pEntity = UserMapper.INSTANCE.userDTOToEntity(pDTO);
         userRepository.save(pEntity);
 
-        return null;
+        UserDTO rDTO = UserMapper.INSTANCE.userEntityToDTO(pEntity);
+
+        log.info("-------------->  " + this.getClass().getName() + ".createUser End !");
+        return rDTO;
     }
 
     //####################################### 사용자 정보 조회 By User ID #######################################//

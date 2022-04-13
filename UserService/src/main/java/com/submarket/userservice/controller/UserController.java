@@ -1,8 +1,10 @@
 package com.submarket.userservice.controller;
 
 import com.submarket.userservice.dto.UserDTO;
+import com.submarket.userservice.mapper.UserMapper;
 import com.submarket.userservice.service.impl.UserService;
 import com.submarket.userservice.vo.RequestUser;
+import com.submarket.userservice.vo.ResponseUser;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +24,18 @@ public class UserController {
 
 
     @PostMapping("/users")
-    public UserDTO createUser(@RequestBody RequestUser requestUser) throws Exception {
-        log.info(this.getClass().getName() + ".createUser Start!");
+    public ResponseUser createUser(@RequestBody RequestUser requestUser) throws Exception {
+        log.info("-------------->  " + this.getClass().getName() + ".createUser Start!");
         ModelMapper mapper = new ModelMapper();
         UserDTO pDTO = mapper.map(requestUser, UserDTO.class);
 
         UserDTO rDTO = userService.createUser(pDTO);
 
-        log.info(this.getClass().getName() + ".createUser End!");
+        ResponseUser responseUser = UserMapper.INSTANCE.userDTOToResponseUser(rDTO);
+        responseUser.setWelcome("Hello");
+        log.info("-------------->  " + this.getClass().getName() + ".createUser End!");
 
-        return rDTO;
+        return responseUser;
 
     }
 }

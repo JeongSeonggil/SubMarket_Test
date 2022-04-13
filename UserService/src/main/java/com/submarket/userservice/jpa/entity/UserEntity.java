@@ -1,11 +1,13 @@
 package com.submarket.userservice.jpa.entity;
 
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Getter
 @Entity
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "userInfo")
 public class UserEntity {
     @Id
@@ -38,4 +40,18 @@ public class UserEntity {
 
     @Column(length = 80)
     private String userAddress2;
+
+    @Builder
+    private UserEntity(String userId, String userPassword, String userName, String userEmail,
+                       String userAge, String userPn, int userStatus, String userAddress, String userAddress2) {
+        this.userId = userId;
+        this.userPassword = userPassword;
+        this.userName = userName;
+        this.userEmail = userEmail;
+        this.userAge = userAge;
+        this.userPn = userPn;
+        this.userStatus = userStatus;
+        this.userAddress = userAddress;
+        this.userAddress2 = userAddress2;
+    }
 }
