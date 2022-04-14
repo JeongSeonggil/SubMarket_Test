@@ -34,7 +34,7 @@ public class UserService implements IUserService {
         log.info("-------------->  " + this.getClass().getName() + ".createUser Start !");
 
         // 중복 확인
-        int check = checkUserInfo(pDTO.getUserId());
+        int check = checkUserInfoByIdEmail(pDTO.getUserId(), pDTO.getUserEmail());
 
         if (check == 0) { // 회원 정보 중복
             return check;
@@ -47,12 +47,12 @@ public class UserService implements IUserService {
         return check;
     }
 
-    //####################################### 아이디 중복 확인 #######################################//
+    //####################################### 아이디, 이메일 중복 확인 #######################################//
     @Override
-    public int checkUserInfo(String userId) {
+    public int checkUserInfoByIdEmail(String userId, String userEmail) {
         log.info("--------------> " + this.getClass().getName() + ".checkUserInfo Start !");
 
-        UserEntity userEntity = userRepository.findByUserId(userId);
+        UserEntity userEntity = userRepository.findByUserIdOrUserEmail(userId, userEmail);
 
 
         if (userEntity != null) {

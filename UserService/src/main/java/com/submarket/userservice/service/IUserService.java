@@ -8,7 +8,7 @@ public interface IUserService extends UserDetailsService{
 
     UserDTO getUserDetailsByUserId(String userId);
 
-    int checkUserInfo(String userId);
+    int checkUserInfoByIdEmail(String userId, String userEmail);
 
 
 }
