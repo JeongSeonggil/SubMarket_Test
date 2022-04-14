@@ -4,9 +4,11 @@ import com.submarket.userservice.dto.UserDTO;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface IUserService extends UserDetailsService{
-    UserDTO createUser(UserDTO pDTO) throws Exception;
+    int createUser(UserDTO pDTO) throws Exception;
 
     UserDTO getUserDetailsByUserId(String userId);
+
+    int checkUserInfo(String userId);
 
 
 }

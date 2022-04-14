@@ -1,6 +1,7 @@
 package com.submarket.userservice.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ import javax.persistence.Id;
 public class UserDTO {
     private String userId;
     private String userPassword;
+    private String userEncPassword;
     private String userName;
     private String userEmail;
     private String userAge;
@@ -22,4 +24,6 @@ public class UserDTO {
     private int userStatus;
     private String userAddress;
     private String userAddress2;
+
 }
+

@@ -29,21 +29,39 @@ public class UserService implements IUserService {
     }
 
     //####################################### 회원가입 #######################################//
-
     @Override
-    public UserDTO createUser(UserDTO pDTO) throws Exception {
+    public int createUser(UserDTO pDTO) throws Exception {
         log.info("-------------->  " + this.getClass().getName() + ".createUser Start !");
 
-        pDTO.setUserPassword(passwordEncoder.encode(pDTO.getUserPassword()));
-        pDTO.setUserStatus(1);
+        // 중복 확인
+        int check = checkUserInfo(pDTO.getUserId());
 
-        UserEntity pEntity = UserMapper.INSTANCE.userDTOToEntity(pDTO);
-        userRepository.save(pEntity);
-
-        UserDTO rDTO = UserMapper.INSTANCE.userEntityToDTO(pEntity);
-
+        if (check == 0) { // 회원 정보 중복
+            return check;
+        } else { // 중복 X 회원가입 실행
+            pDTO.setUserEncPassword(passwordEncoder.encode(pDTO.getUserPassword()));
+            UserEntity pEntity = UserMapper.INSTANCE.userDTOToEntity(pDTO);
+            userRepository.save(pEntity);
+        }
         log.info("-------------->  " + this.getClass().getName() + ".createUser End !");
-        return rDTO;
+        return check;
+    }
+
+    //####################################### 아이디 중복 확인 #######################################//
+    @Override
+    public int checkUserInfo(String userId) {
+        log.info("--------------> " + this.getClass().getName() + ".checkUserInfo Start !");
+
+        UserEntity userEntity = userRepository.findByUserId(userId);
+
+
+        if (userEntity != null) {
+            return 0;
+        }
+
+        log.info("--------------> " + this.getClass().getName() + ".checkUserInfo End!");
+
+        return 1;
     }
 
     //####################################### 사용자 정보 조회 By User ID #######################################//
