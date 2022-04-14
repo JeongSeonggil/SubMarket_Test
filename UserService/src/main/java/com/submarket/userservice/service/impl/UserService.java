@@ -21,46 +21,36 @@ import java.util.ArrayList;
 public class UserService implements IUserService {
     private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder;
+    private UserCheckService userCheckService;
 
     @Autowired
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder,
+                       UserCheckService userCheckService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userCheckService = userCheckService;
     }
 
     //####################################### 회원가입 #######################################//
     @Override
     public int createUser(UserDTO pDTO) throws Exception {
         log.info("-------------->  " + this.getClass().getName() + ".createUser Start !");
+        int resId = 0;
+        int resEmail = 0;
 
-        // 중복 확인
-        int check = checkUserInfoByIdEmail(pDTO.getUserId(), pDTO.getUserEmail());
+        /** 아이디 중복 확인 (0 = 중복, 1 = pass)*/
 
-        if (check == 0) { // 회원 정보 중복
-            return check;
-        } else { // 중복 X 회원가입 실행
+        resId = userCheckService.checkUserByUserId(pDTO.getUserId());
+        resEmail = userCheckService.checkUserByUserEmail(pDTO.getUserEmail());
+        if (resId + resEmail < 2) { /** ID or Email 에서 중복이 발생 */
+            return 0;
+
+        } else { /** 중복 발생 X 회원가입 실행 */
             pDTO.setUserEncPassword(passwordEncoder.encode(pDTO.getUserPassword()));
             UserEntity pEntity = UserMapper.INSTANCE.userDTOToEntity(pDTO);
             userRepository.save(pEntity);
         }
         log.info("-------------->  " + this.getClass().getName() + ".createUser End !");
-        return check;
-    }
-
-    //####################################### 아이디, 이메일 중복 확인 #######################################//
-    @Override
-    public int checkUserInfoByIdEmail(String userId, String userEmail) {
-        log.info("--------------> " + this.getClass().getName() + ".checkUserInfo Start !");
-
-        UserEntity userEntity = userRepository.findByUserIdOrUserEmail(userId, userEmail);
-
-
-        if (userEntity != null) {
-            return 0;
-        }
-
-        log.info("--------------> " + this.getClass().getName() + ".checkUserInfo End!");
-
         return 1;
     }
 
