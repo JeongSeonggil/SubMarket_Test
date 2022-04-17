@@ -4,14 +4,12 @@ import com.submarket.userservice.dto.UserDTO;
 import com.submarket.userservice.mapper.UserMapper;
 import com.submarket.userservice.service.impl.UserCheckService;
 import com.submarket.userservice.service.impl.UserService;
+import com.submarket.userservice.vo.RequestChangePassword;
 import com.submarket.userservice.vo.RequestUser;
 import com.submarket.userservice.vo.ResponseUser;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.EntityMode;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +28,7 @@ public class UserController {
 
     /**<---------------------->회원가입</---------------------->*/
     @PostMapping("/users")
-    public ResponseEntity<Integer> createUser(@RequestBody RequestUser requestUser) throws Exception {
+    public ResponseEntity<String> createUser(@RequestBody RequestUser requestUser) throws Exception {
         log.info("-------------->  " + this.getClass().getName() + ".createUser Start!");
         int res = 0;
 
@@ -39,63 +37,75 @@ public class UserController {
         res = userService.createUser(pDTO);
 
         if (res == 0) { /** 아이디 중복 발생 */
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("아이디 또는 이메일을 확인해주세요."); // 충돌 발생
         }
 
         log.info("-------------->  " + this.getClass().getName() + ".createUser End!");
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(res);
+        return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 성공");
     }
 
     /**<------------------------>아이디 중복 확인</------------------------>*/
-    @GetMapping("/check-id/{userId}")
-    public ResponseEntity<Integer> checkUserById(@PathVariable String userId) throws Exception {
+    @GetMapping("/users/check-id/{userId}")
+    public ResponseEntity<String> checkUserById(@PathVariable String userId) throws Exception {
         log.info("-------------------- > " + this.getClass().getName() + "checkId Start!");
-        int res = userCheckService.checkUserByUserId(userId);
+        boolean checkId = userCheckService.checkUserByUserId(userId);
 
-        if (res == 0) {
-            log.info("아이디 중복 발생");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+        if (checkId) {
+            log.info("-------------------- > " + this.getClass().getName() + "checkId End!");
+            return ResponseEntity.status(HttpStatus.OK).body("사용가능한 아이디 입니다");
         }
-        log.info("-------------------- > " + this.getClass().getName() + "checkId End!");
-        return ResponseEntity.status(HttpStatus.OK).body(res);
+        log.info("아이디 중복 발생");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("아이디 중복 입니다");
     }
 
     /**<------------------------>이메일 중복 확인</------------------------>*/
-    @GetMapping("/check-email/{userEmail}")
-    public ResponseEntity<Integer> checkUserByEmail(@PathVariable String userEmail) throws Exception {
+    @GetMapping("/users/check-email/{userEmail}")
+    public ResponseEntity<String> checkUserByEmail(@PathVariable String userEmail) throws Exception {
         log.info("-------------------- > " + this.getClass().getSimpleName() + "checkEmail Start!");
-        int res = userCheckService.checkUserByUserEmail(userEmail);
+        boolean checkEmail = userCheckService.checkUserByUserEmail(userEmail);
 
-        if (res == 0) {
-            log.info("이메일 중복 발생");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+        if (checkEmail) {
+            log.info("-------------------- > " + this.getClass().getName() + "checkEmail End!");
+            return ResponseEntity.status(HttpStatus.OK).body("사용가능한 이메일 입니다.");
+
         }
-        log.info("-------------------- > " + this.getClass().getName() + "checkEmail End!");
-        return ResponseEntity.status(HttpStatus.OK).body(res);
+        log.info("이메일 중복 발생");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("이메일 중복 입니다");
     }
 
     /**<------------------------>아이디 찾기 with UserEmail </------------------------>
      * 만약 Email 이 같다면 아이디 정보 일부를 제공*/
-    @GetMapping("/find-id/{userEmail}")
-    public ResponseEntity<ResponseUser> findUserId(@PathVariable String userEmail) throws Exception {
+    @GetMapping("/users/find-id/{userEmail}")
+    public ResponseEntity<String> findUserId(@PathVariable String userEmail) throws Exception {
         log.info("-------------------- > " + this.getClass().getName() + "findUserId Start!");
-        ResponseUser responseUser = new ResponseUser();
-        UserDTO rDTO = userCheckService.findUserInfoByUserEmail(userEmail);
+        UserDTO rDTO = userService.getUserInfoByUserEmail(userEmail);
         String userId;
-        String userIdEnd;
 
         if (rDTO == null) { /** 유저 정보가 없을 경우 Not Found return */
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
         }
         /** 사용자 정보가 있을 경우 수정 후 전송 */
         userId = rDTO.getUserId().replaceAll("(?<=.{4}).", "*");
-
-
-
-        responseUser.setUserId(userId);
         log.info("-------------------- > " + this.getClass().getName() + "findUserId End!");
-        return ResponseEntity.status(HttpStatus.OK).body(responseUser);
+        return ResponseEntity.status(HttpStatus.OK).body(userId);
     }
+    /**<------------------------>비밀번호 변경</------------------------>*/
+    @PostMapping("/users/changePassword")
+    public ResponseEntity<String> changePassword(@RequestBody RequestChangePassword request) throws Exception {
+
+        UserDTO pDTO = new UserDTO();
+        pDTO.setUserId(request.getUserId());
+        pDTO.setUserPassword(request.getOldPassword());
+
+        int check = userService.changeUserPassword(pDTO, request.getNewPassword());
+
+        if (check == 1) { // 변경 성공
+            return ResponseEntity.status(HttpStatus.OK).body("비밀번호 변경 성공");
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이전 비밀번호를 확인해 주세요");
+
+    }
+
 
 }

@@ -5,6 +5,7 @@ import com.submarket.userservice.jpa.UserRepository;
 import com.submarket.userservice.jpa.entity.UserEntity;
 import com.submarket.userservice.mapper.UserMapper;
 import com.submarket.userservice.service.IUserService;
+import com.submarket.userservice.vo.RequestChangePassword;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,26 +36,57 @@ public class UserService implements IUserService {
     @Override
     public int createUser(UserDTO pDTO) throws Exception {
         log.info("-------------->  " + this.getClass().getName() + ".createUser Start !");
-        int resId = 0;
-        int resEmail = 0;
+        /** 아이디 중복 확인 (1 = 중복, 0 = pass)*/
 
-        /** 아이디 중복 확인 (0 = 중복, 1 = pass)*/
-
-        resId = userCheckService.checkUserByUserId(pDTO.getUserId());
-        resEmail = userCheckService.checkUserByUserEmail(pDTO.getUserEmail());
-        if (resId + resEmail < 2) { /** ID or Email 에서 중복이 발생 */
-            return 0;
-
-        } else { /** 중복 발생 X 회원가입 실행 */
+        boolean checkId = userCheckService.checkUserByUserId(pDTO.getUserId());
+        boolean checkEmail = userCheckService.checkUserByUserEmail(pDTO.getUserEmail());
+        if (checkId && checkEmail) { /** ID or Email 에서 중복확인 완료 실행 가능 */ // 둘 다 0이 넘어와야지만 아래 코드 실행
+            pDTO.setUserStatus(1); // 사용자 활성화 / (이메일 체크 후 활성화 로직 추가)
             pDTO.setUserEncPassword(passwordEncoder.encode(pDTO.getUserPassword()));
             UserEntity pEntity = UserMapper.INSTANCE.userDTOToEntity(pDTO);
             userRepository.save(pEntity);
+
+        } else { /** 중복 발생 실패 */
+            return 0;
         }
         log.info("-------------->  " + this.getClass().getName() + ".createUser End !");
         return 1;
     }
+    //####################################### 사용자 정보 조회 By UserEmail #######################################//
+    @Override
+    public UserDTO getUserInfoByUserEmail(String userEmail) {
+        UserEntity userEntity = userRepository.findByUserEmail(userEmail);
 
-    //####################################### 사용자 정보 조회 By User ID #######################################//
+        UserDTO rDTO = UserMapper.INSTANCE.userEntityToDTO(userEntity);
+
+        return rDTO;
+    }
+
+    @Override
+    public int changeUserPassword(UserDTO pDTO, String newPassword) throws Exception {
+        log.info(this.getClass().getName() + "changeUserPassword Start!");
+        String userId = pDTO.getUserId();
+        String userPassword = pDTO.getUserPassword();
+
+        // 비밀번호가 일치하는지 확인
+        boolean checkPassword = userCheckService.isTruePassword(userId, userPassword);
+
+        // 만약 비밀번호가 일치한다면
+        if (checkPassword) {
+            log.info("비밀번호 일치");
+            userRepository.changeUserPassword(passwordEncoder.encode(newPassword));
+
+            log.info(this.getClass().getName() + "changeUserPassword End!");
+            return 1; // 성공
+        }
+        log.info(this.getClass().getName() + "changeUserPassword End!");
+        return 0; // 실패
+
+
+
+    }
+
+    //####################################### JWT Don't change #######################################//
     @Override
     public UserDTO getUserDetailsByUserId(String userId) {
         UserEntity rEntity = userRepository.findByUserId(userId);

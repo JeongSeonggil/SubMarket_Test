@@ -2,12 +2,14 @@ package com.submarket.userservice.service;
 
 import com.submarket.userservice.dto.UserDTO;
 import com.submarket.userservice.jpa.entity.UserEntity;
+import com.submarket.userservice.vo.RequestChangePassword;
 
 public interface IUserCheckService {
 
-    int checkUserByUserId(String userId);
+    boolean checkUserByUserId(String userId);
 
-    int checkUserByUserEmail(String userEmail);
+    boolean checkUserByUserEmail(String userEmail);
 
-    UserDTO findUserInfoByUserEmail(String userEmail);
+    boolean isTruePassword(String userId, String userPassword) throws Exception;
+
 }
