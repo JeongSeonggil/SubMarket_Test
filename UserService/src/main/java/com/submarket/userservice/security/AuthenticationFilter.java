@@ -26,11 +26,13 @@ import java.util.Date;
 @Slf4j
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private UserService userService;
+    private Environment env;
 
     public AuthenticationFilter(AuthenticationManager authenticationManager,
-                                UserService userService) {
+                                UserService userService, Environment env) {
         super.setAuthenticationManager(authenticationManager);
         this.userService = userService;
+        this.env = env;
     }
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
@@ -63,7 +65,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .setSubject(userDetails.getUserId())
                 .setExpiration(new Date(System.currentTimeMillis() +
                         Long.parseLong("10000000")))
-                .signWith(SignatureAlgorithm.HS512, "test1234")
+                .signWith(SignatureAlgorithm.HS512, env.getProperty("token.secret"))
                 .compact();
 
         response.addHeader("token", token);

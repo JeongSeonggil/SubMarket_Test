@@ -4,11 +4,13 @@ import com.submarket.userservice.dto.UserDTO;
 import com.submarket.userservice.mapper.UserMapper;
 import com.submarket.userservice.service.impl.UserCheckService;
 import com.submarket.userservice.service.impl.UserService;
+import com.submarket.userservice.util.TokenUtil;
 import com.submarket.userservice.vo.RequestChangePassword;
 import com.submarket.userservice.vo.RequestUser;
-import com.submarket.userservice.vo.ResponseUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +20,15 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private UserService userService;
     private UserCheckService userCheckService;
+    private Environment env;
 
 
     @Autowired
-    public UserController(UserService userService, UserCheckService userCheckService) {
+    public UserController(UserService userService, UserCheckService userCheckService,
+                          Environment env) {
         this.userService = userService;
         this.userCheckService = userCheckService;
+        this.env = env;
     }
 
     /**<---------------------->회원가입</---------------------->*/
@@ -105,6 +110,15 @@ public class UserController {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이전 비밀번호를 확인해 주세요");
 
+    }
+
+    @GetMapping("/getToken")
+    public ResponseEntity<String> getToken(@RequestHeader HttpHeaders header) {
+        log.debug("getToken Start!");
+        String userId = TokenUtil.getUserIdByToken(header, env.getProperty("token.secret"));
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(userId);
     }
 
 
