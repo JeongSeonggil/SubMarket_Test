@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="DiscoveryService" />
+        <module name="SellerService" />
         <module name="UserService" />
         <module name="ApiGateway" />
       </profile>
@@ -14,6 +15,7 @@
     <bytecodeTargetLevel>
       <module name="ApiGateway" target="1.8" />
       <module name="DiscoveryService" target="1.8" />
+      <module name="SellerService" target="1.8" />
       <module name="UserService" target="1.8" />
     </bytecodeTargetLevel>
   </component>
@@ -21,6 +23,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="ApiGateway" options="-parameters" />
       <module name="DiscoveryService" options="-parameters" />
+      <module name="SellerService" options="-parameters" />
       <module name="UserService" options="-parameters" />
     </option>
   </component>

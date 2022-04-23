@@ -13,11 +13,11 @@ public class TokenUtil {
 
     public static String getUserIdByToken(HttpHeaders headers, String secret) {
         log.debug("Token Util Start!");
-        String token = headers.get("Authorization").get(0); // Get Token
-        String jwt = token.replace("Bearer", ""); // Bearer 삭제
+        String token = headers.get("Authorization").get(0); // Get Token in headers
+        String jwt = token.replace("Bearer", ""); // delete Bearer
 
         log.info("JWT : " + jwt); // TokenValue
-        String userId = Jwts.parser().setSigningKey(secret).parseClaimsJws(jwt).getBody().getSubject(); // 복호화
+        String userId = Jwts.parser().setSigningKey(secret).parseClaimsJws(jwt).getBody().getSubject();
 
         log.info("getUserId End");
 

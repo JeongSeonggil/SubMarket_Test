@@ -14,6 +14,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
+    private int userSeq;
     private String userId;
     private String userPassword;
     private String userEncPassword;
