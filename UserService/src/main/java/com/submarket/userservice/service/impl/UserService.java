@@ -48,6 +48,7 @@ public class UserService implements IUserService {
             UserEntity pEntity = UserMapper.INSTANCE.userDTOToEntity(pDTO);
 
             userRepository.save(pEntity);
+
             // 환영 메일 전송
             mailService.sendMail(pDTO.getUserEmail(), "Welcome!!", pDTO.getUserName() + "님 SubMarket 가입을 환영합니다!");
 

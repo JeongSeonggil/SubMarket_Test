@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -20,6 +21,7 @@ public class MailService {
         this.env = env;
     }
 
+    @Async
     public void sendMail(String mailAddress, String title, String mailMessage) {
         log.info(this.getClass().getName() + ".SendMail Start!");
 
