@@ -1,19 +1,24 @@
 package com.submarket.userservice.controller;
 
+import com.submarket.userservice.service.impl.MailService;
+import com.submarket.userservice.service.impl.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
 @Slf4j
+@RestController
 public class MainController {
     private Environment env;
+    private MailService mailService;
 
     @Autowired
-    public MainController(Environment env) {
+    public MainController(Environment env, MailService mailService) {
         this.env = env;
+        this.mailService = mailService;
+
     }
 
     @GetMapping("/health")
@@ -25,4 +30,5 @@ public class MainController {
                 + ", token secret : " + env.getProperty("token.secret")
                 + ", token expiration time : " + env.getProperty("token.expiration_time");
     }
+
 }

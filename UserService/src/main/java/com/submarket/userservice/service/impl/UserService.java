@@ -23,13 +23,15 @@ public class UserService implements IUserService {
     private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder;
     private UserCheckService userCheckService;
+    private MailService mailService;
 
     @Autowired
     public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder,
-                       UserCheckService userCheckService) {
+                       UserCheckService userCheckService, MailService mailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userCheckService = userCheckService;
+        this.mailService = mailService;
     }
 
     //####################################### 회원가입 #######################################//
@@ -44,7 +46,10 @@ public class UserService implements IUserService {
             pDTO.setUserStatus(1); // 사용자 활성화 / (이메일 체크 후 활성화 로직 추가)
             pDTO.setUserEncPassword(passwordEncoder.encode(pDTO.getUserPassword()));
             UserEntity pEntity = UserMapper.INSTANCE.userDTOToEntity(pDTO);
+
             userRepository.save(pEntity);
+            // 환영 메일 전송
+            mailService.sendMail(pDTO.getUserEmail(), "Welcome!!", pDTO.getUserName() + "님 SubMarket 가입을 환영합니다!");
 
         } else { /** 중복 발생 실패 */
             return 0;
