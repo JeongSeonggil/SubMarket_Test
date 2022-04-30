@@ -1,19 +1,16 @@
 package com.submarket.userservice.dto;
 
+import com.submarket.userservice.jpa.entity.SubEntity;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class UserDto {
     private int userSeq;
     private String userId;
     private String userPassword;
@@ -25,6 +22,7 @@ public class UserDTO {
     private int userStatus;
     private String userAddress;
     private String userAddress2;
+    private List<SubEntity> subEntityList;
 
 }
 

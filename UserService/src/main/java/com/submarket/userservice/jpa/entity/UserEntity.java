@@ -1,8 +1,10 @@
 package com.submarket.userservice.jpa.entity;
 
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,6 +42,9 @@ public class UserEntity {
 
     @Column(length = 80)
     private String userAddress2;
+
+    @OneToMany(mappedBy = "user")
+    private List<SubEntity> subEntityList;
 
     @Builder
     private UserEntity(String userId, String userPassword, String userName, String userEmail,

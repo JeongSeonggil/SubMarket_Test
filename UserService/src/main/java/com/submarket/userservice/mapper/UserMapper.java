@@ -1,7 +1,6 @@
 package com.submarket.userservice.mapper;
 
-import com.submarket.userservice.dto.UserDTO;
-import com.submarket.userservice.jpa.UserRepository;
+import com.submarket.userservice.dto.UserDto;
 import com.submarket.userservice.jpa.entity.UserEntity;
 import com.submarket.userservice.vo.RequestUser;
 import com.submarket.userservice.vo.ResponseUser;
@@ -18,12 +17,12 @@ public interface UserMapper{
 
     // DB에 Enc 된 Password 를 저장
     @Mapping(source = "userEncPassword", target = "userPassword")
-    UserEntity userDTOToEntity(UserDTO userDTO);
+    UserEntity userDtoToUserEntity(UserDto userDto);
 
-    UserDTO userEntityToDTO(UserEntity userEntity);
+    UserDto userEntityToUserDto(UserEntity userEntity);
 
-    UserDTO RequestUserToUserDTO(RequestUser requestUser);
+    UserDto RequestUserToUserDto(RequestUser requestUser);
 
-    ResponseUser userDTOToResponseUser(UserDTO userDTO);
+    ResponseUser userDtoToResponseUser(UserDto userDto);
 
 }

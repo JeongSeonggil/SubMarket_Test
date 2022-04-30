@@ -1,17 +1,16 @@
 package com.submarket.userservice.service;
 
-import com.submarket.userservice.dto.UserDTO;
-import com.submarket.userservice.vo.RequestChangePassword;
+import com.submarket.userservice.dto.UserDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface IUserService extends UserDetailsService{
-    int createUser(UserDTO pDTO) throws Exception;
+    int createUser(UserDto pDTO) throws Exception;
 
-    UserDTO getUserInfoByUserEmail(String userEmail);
+    UserDto getUserInfoByUserEmail(String userEmail);
 
-    UserDTO getUserDetailsByUserId(String userId);
+    UserDto getUserDetailsByUserId(String userId);
 
-    int changeUserPassword(UserDTO pDTO, String newPassword) throws Exception;
+    int changeUserPassword(UserDto pDTO, String newPassword) throws Exception;
 
 
 }

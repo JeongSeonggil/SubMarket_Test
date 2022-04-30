@@ -1,11 +1,10 @@
 package com.submarket.userservice.service.impl;
 
-import com.submarket.userservice.dto.UserDTO;
+import com.submarket.userservice.dto.UserDto;
 import com.submarket.userservice.jpa.UserRepository;
 import com.submarket.userservice.jpa.entity.UserEntity;
 import com.submarket.userservice.mapper.UserMapper;
 import com.submarket.userservice.service.IUserService;
-import com.submarket.userservice.vo.RequestChangePassword;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ public class UserService implements IUserService {
 
     //####################################### 회원가입 #######################################//
     @Override
-    public int createUser(UserDTO pDTO) throws Exception {
+    public int createUser(UserDto pDTO) throws Exception {
         log.info("-------------->  " + this.getClass().getName() + ".createUser Start !");
         /** 아이디 중복 확인 (1 = 중복, 0 = pass)*/
 
@@ -45,7 +44,7 @@ public class UserService implements IUserService {
         if (checkId && checkEmail) { /** ID or Email 에서 중복확인 완료 실행 가능 */ // 둘 다 0이 넘어와야지만 아래 코드 실행
             pDTO.setUserStatus(1); // 사용자 활성화 / (이메일 체크 후 활성화 로직 추가)
             pDTO.setUserEncPassword(passwordEncoder.encode(pDTO.getUserPassword()));
-            UserEntity pEntity = UserMapper.INSTANCE.userDTOToEntity(pDTO);
+            UserEntity pEntity = UserMapper.INSTANCE.userDtoToUserEntity(pDTO);
 
             userRepository.save(pEntity);
 
@@ -60,16 +59,16 @@ public class UserService implements IUserService {
     }
     //####################################### 사용자 정보 조회 By UserEmail #######################################//
     @Override
-    public UserDTO getUserInfoByUserEmail(String userEmail) {
+    public UserDto getUserInfoByUserEmail(String userEmail) {
         UserEntity userEntity = userRepository.findByUserEmail(userEmail);
 
-        UserDTO rDTO = UserMapper.INSTANCE.userEntityToDTO(userEntity);
+        UserDto rDTO = UserMapper.INSTANCE.userEntityToUserDto(userEntity);
 
         return rDTO;
     }
 
     @Override
-    public int changeUserPassword(UserDTO pDTO, String newPassword) throws Exception {
+    public int changeUserPassword(UserDto pDTO, String newPassword) throws Exception {
         log.info(this.getClass().getName() + "changeUserPassword Start!");
         String userId = pDTO.getUserId();
         String userPassword = pDTO.getUserPassword();
@@ -94,14 +93,14 @@ public class UserService implements IUserService {
 
     //####################################### JWT Don't change #######################################//
     @Override
-    public UserDTO getUserDetailsByUserId(String userId) {
+    public UserDto getUserDetailsByUserId(String userId) {
         UserEntity rEntity = userRepository.findByUserId(userId);
 
         if (rEntity == null) {
             throw new UsernameNotFoundException(userId);
         }
 
-        UserDTO rDTO = new ModelMapper().map(rEntity, UserDTO.class);
+        UserDto rDTO = new ModelMapper().map(rEntity, UserDto.class);
         return rDTO;
     }
 

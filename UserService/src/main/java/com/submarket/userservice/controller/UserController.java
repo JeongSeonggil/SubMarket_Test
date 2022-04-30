@@ -1,6 +1,6 @@
 package com.submarket.userservice.controller;
 
-import com.submarket.userservice.dto.UserDTO;
+import com.submarket.userservice.dto.UserDto;
 import com.submarket.userservice.mapper.UserMapper;
 import com.submarket.userservice.service.impl.UserCheckService;
 import com.submarket.userservice.service.impl.UserService;
@@ -37,7 +37,7 @@ public class UserController {
         log.info("-------------->  " + this.getClass().getName() + ".createUser Start!");
         int res = 0;
 
-        UserDTO pDTO = UserMapper.INSTANCE.RequestUserToUserDTO(requestUser);
+        UserDto pDTO = UserMapper.INSTANCE.RequestUserToUserDto(requestUser);
 
         res = userService.createUser(pDTO);
 
@@ -84,7 +84,7 @@ public class UserController {
     @GetMapping("/users/find-id/{userEmail}")
     public ResponseEntity<String> findUserId(@PathVariable String userEmail) throws Exception {
         log.info("-------------------- > " + this.getClass().getName() + "findUserId Start!");
-        UserDTO rDTO = userService.getUserInfoByUserEmail(userEmail);
+        UserDto rDTO = userService.getUserInfoByUserEmail(userEmail);
         String userId;
 
         if (rDTO == null) { /** 유저 정보가 없을 경우 Not Found return */
@@ -99,7 +99,7 @@ public class UserController {
     @PostMapping("/users/changePassword")
     public ResponseEntity<String> changePassword(@RequestBody RequestChangePassword request) throws Exception {
 
-        UserDTO pDTO = new UserDTO();
+        UserDto pDTO = new UserDto();
         pDTO.setUserId(request.getUserId());
         pDTO.setUserPassword(request.getOldPassword());
 

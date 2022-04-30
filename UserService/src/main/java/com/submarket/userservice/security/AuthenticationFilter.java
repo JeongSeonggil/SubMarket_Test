@@ -1,7 +1,7 @@
 package com.submarket.userservice.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.submarket.userservice.dto.UserDTO;
+import com.submarket.userservice.dto.UserDto;
 import com.submarket.userservice.service.impl.UserService;
 import com.submarket.userservice.vo.RequestLogin;
 import io.jsonwebtoken.Jwts;
@@ -58,7 +58,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
         String userId = ((User)authResult.getPrincipal()).getUsername();
-        UserDTO userDetails = userService.getUserDetailsByUserId(userId);
+        UserDto userDetails = userService.getUserDetailsByUserId(userId);
 
 
         String token = Jwts.builder()
