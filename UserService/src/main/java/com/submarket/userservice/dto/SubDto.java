@@ -16,7 +16,6 @@ import java.util.Date;
 public class SubDto {
     private Integer subSeq;
     private int itemSeq;
-    private int subStatus;
     private String subDate;
     private int subCount;
     private UserEntity user;

@@ -4,5 +4,8 @@ import lombok.Data;
 
 @Data
 public class RequestSub {
+
     private int itemSeq;
+
+    private int subSeq;
 }

@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.Optional;
 
 @Service(value = "SubService")
 @Slf4j
@@ -36,7 +36,6 @@ public class SubService implements ISubService {
         subDto.setUser(userRepository.findByUserId("dataofsg02")); // 수정 필요
         subDto.setSubDate(DateUtil.getDateTime("MMdd"));
         subDto.setSubCount(1);
-        subDto.setSubStatus(1);
         log.info("itemSeq : " + subDto.getItemSeq());
 
         SubEntity subEntity = SubMapper.INSTANCE.subDtoToSubEntity(subDto);
@@ -60,18 +59,10 @@ public class SubService implements ISubService {
 
     /** ------------------------- 구독 취소 ------------------------------*/
     @Override
-    public int cancelSub(SubDto subDto) {
+    public int cancelSub(int subSeq) {
         log.info(this.getClass().getName() + ".cancelSub Start!");
-
-        int res = 0;
-
-        int subSeq = subDto.getSubSeq();
-
-        subRepository.cancelSub(subSeq);
-        res = 1;
-
-
+        subRepository.deleteById(subSeq);
         log.info(this.getClass().getName() + "cancelSub End!");
-        return res;
+        return 1;
     }
 }

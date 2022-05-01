@@ -20,9 +20,6 @@ public class SubEntity {
     @Column(nullable = false)
     private int itemSeq;
 
-    @Column(nullable = false)
-    private int subStatus;
-
     @Column
     private String subDate;
 
@@ -34,8 +31,7 @@ public class SubEntity {
     private UserEntity user;
 
     @Builder
-    public SubEntity(int subStatus, String subDate, int subCount, UserEntity user, int itemSeq) {
-        this.subStatus = subStatus;
+    public SubEntity(String subDate, int subCount, UserEntity user, int itemSeq) {
         this.subCount = subCount;
         this.subDate = subDate;
         this.user = user;
