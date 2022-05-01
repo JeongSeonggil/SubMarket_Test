@@ -9,4 +9,8 @@ public interface ISubService {
 
     int createNewSub(SubDto subDto);
 
+    int updateSub(SubDto subDto);
+
+    int cancelSub(SubDto subDto);
+
 }

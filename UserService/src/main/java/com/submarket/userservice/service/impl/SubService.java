@@ -6,6 +6,7 @@ import com.submarket.userservice.jpa.UserRepository;
 import com.submarket.userservice.jpa.entity.SubEntity;
 import com.submarket.userservice.mapper.SubMapper;
 import com.submarket.userservice.service.ISubService;
+import com.submarket.userservice.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class SubService implements ISubService {
 
         int res = 0;
         subDto.setUser(userRepository.findByUserId("dataofsg02")); // 수정 필요
-        subDto.setSubDate(new Date());
+        subDto.setSubDate(DateUtil.getDateTime("MMdd"));
         subDto.setSubCount(1);
         subDto.setSubStatus(1);
         log.info("itemSeq : " + subDto.getItemSeq());
@@ -47,6 +48,30 @@ public class SubService implements ISubService {
 
         log.info(this.getClass().getName() + "createNewSub End");
 
+        return res;
+    }
+
+    /** ------------------------- 구독 갱신 ------------------------------*/
+    @Override
+    public int updateSub(SubDto subDto) {
+        return 0;
+    }
+
+
+    /** ------------------------- 구독 취소 ------------------------------*/
+    @Override
+    public int cancelSub(SubDto subDto) {
+        log.info(this.getClass().getName() + ".cancelSub Start!");
+
+        int res = 0;
+
+        int subSeq = subDto.getSubSeq();
+
+        subRepository.cancelSub(subSeq);
+        res = 1;
+
+
+        log.info(this.getClass().getName() + "cancelSub End!");
         return res;
     }
 }

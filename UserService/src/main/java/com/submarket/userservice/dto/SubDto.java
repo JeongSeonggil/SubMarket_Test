@@ -17,7 +17,7 @@ public class SubDto {
     private Integer subSeq;
     private int itemSeq;
     private int subStatus;
-    private Date subDate;
+    private String subDate;
     private int subCount;
     private UserEntity user;
 }
