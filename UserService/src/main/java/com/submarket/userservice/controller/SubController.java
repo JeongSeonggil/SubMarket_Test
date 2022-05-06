@@ -7,10 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -42,19 +39,39 @@ public class SubController {
     }
 
     @DeleteMapping("/sub")
-    public String cancelSub(@RequestBody RequestSub requestSub) throws Exception {
+    public ResponseEntity<String> cancelSub(@RequestBody RequestSub requestSub) throws Exception {
         log.info(this.getClass().getName() + "cancel Sub Start!");
 
-        int subSeq = requestSub.getSubSeq();
+        SubDto subDto = new SubDto();
 
-        int res = subService.cancelSub(subSeq);
+        subDto.setSubSeq(requestSub.getSubSeq());
+
+        int res = subService.cancelSub(subDto);
 
 
         log.info(this.getClass().getName() + "cancel Sub End!");
 
         if (res != 1) {
-            return "구독 취소 실패";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("구독 취소 실패");
         }
-        return "구독 취소 성공";
+        return ResponseEntity.status(HttpStatus.CONTINUE).body("구독 취소 성공");
+    }
+
+    @PatchMapping("/sub")
+    public ResponseEntity<String> updateSub(@RequestBody RequestSub requestSub) throws Exception {
+        log.info(this.getClass().getName() + ".updateSub Start!");
+        SubDto subDto = new SubDto();
+        subDto.setSubSeq(requestSub.getSubSeq());
+
+        int res = subService.updateSub(subDto);
+
+        if (res != 1) {
+            return ResponseEntity.ok("갱신 실패");
+        }
+
+        log.info(this.getClass().getName() + "updateSub End!");
+        return ResponseEntity.ok("갱신 완료");
+
+
     }
 }

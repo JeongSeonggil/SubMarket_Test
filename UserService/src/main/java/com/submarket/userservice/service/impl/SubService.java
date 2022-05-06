@@ -53,15 +53,22 @@ public class SubService implements ISubService {
     /** ------------------------- 구독 갱신 ------------------------------*/
     @Override
     public int updateSub(SubDto subDto) {
-        return 0;
+        log.info(this.getClass().getName() + ".updateSub Start!");
+
+        String date = DateUtil.getDateTime(DateUtil.getDateTime("MMdd"));
+        int res = subRepository.updateSub(date, subDto.getSubSeq());
+
+
+        log.info(this.getClass().getName() + ".updateSub End!");
+        return res;
     }
 
 
     /** ------------------------- 구독 취소 ------------------------------*/
     @Override
-    public int cancelSub(int subSeq) {
+    public int cancelSub(SubDto subDto) {
         log.info(this.getClass().getName() + ".cancelSub Start!");
-        subRepository.deleteById(subSeq);
+        subRepository.deleteById(subDto.getSubSeq());
         log.info(this.getClass().getName() + "cancelSub End!");
         return 1;
     }

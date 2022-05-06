@@ -1,5 +1,7 @@
 package com.submarket.userservice.jpa.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 
@@ -10,7 +12,9 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "subInfo")
+@Entity
+@Table(name = "subInfo")
+@JsonIgnoreProperties({"user"})
 public class SubEntity {
 
     @Id
@@ -27,7 +31,6 @@ public class SubEntity {
     private int subCount;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonIgnore
     private UserEntity user;
 
     @Builder

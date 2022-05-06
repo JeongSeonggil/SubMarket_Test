@@ -1,5 +1,7 @@
 package com.submarket.userservice.jpa.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 
@@ -11,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "userInfo")
+@JsonIgnoreProperties({"subEntityList"})
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +51,9 @@ public class UserEntity {
 
     @Builder
     private UserEntity(String userId, String userPassword, String userName, String userEmail,
-                       String userAge, String userPn, int userStatus, String userAddress, String userAddress2) {
+                       String userAge, String userPn,
+                       int userStatus, String userAddress, String userAddress2,
+                       List<SubEntity> subEntityList) {
         this.userId = userId;
         this.userPassword = userPassword;
         this.userName = userName;
@@ -58,5 +63,6 @@ public class UserEntity {
         this.userStatus = userStatus;
         this.userAddress = userAddress;
         this.userAddress2 = userAddress2;
+        this.subEntityList = subEntityList;
     }
 }

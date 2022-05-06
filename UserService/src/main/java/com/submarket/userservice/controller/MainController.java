@@ -1,22 +1,23 @@
 package com.submarket.userservice.controller;
 
+import com.submarket.userservice.dto.SubDto;
+import com.submarket.userservice.dto.UserDto;
 import com.submarket.userservice.jpa.SubRepository;
 import com.submarket.userservice.jpa.UserRepository;
 import com.submarket.userservice.jpa.entity.SubEntity;
 import com.submarket.userservice.jpa.entity.UserEntity;
+import com.submarket.userservice.mapper.SubMapper;
+import com.submarket.userservice.mapper.UserMapper;
 import com.submarket.userservice.service.impl.MailService;
-import com.submarket.userservice.service.impl.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,5 +46,26 @@ public class MainController {
                 + ", port(server.port) : " + env.getProperty("server.port")
                 + ", token secret : " + env.getProperty("token.secret")
                 + ", token expiration time : " + env.getProperty("token.expiration_time");
+    }
+
+    @GetMapping("/test")
+    @Transactional
+    public UserDto test() {
+        Optional<UserEntity> userEntityOptional = userRepository.findById(38);
+        UserDto userDto = UserMapper.INSTANCE.userEntityToUserDto(userEntityOptional.get());
+
+        return userDto;
+    }
+
+    @GetMapping("/test2")
+    @Transactional
+    public ResponseEntity<List<SubEntity>> test2() {
+        List<SubEntity> list = new ArrayList<>();
+        Iterable<SubEntity> subEntityList = subRepository.findAll();
+        subEntityList.forEach(e -> {
+            list.add(e);
+
+        });
+        return ResponseEntity.ok(list);
     }
 }
