@@ -7,6 +7,7 @@ import com.submarket.userservice.jpa.entity.SubEntity;
 import java.util.List;
 
 public interface ISubService {
+    List<SubEntity> findSub(SubDto subDto) throws Exception;
 
     int createNewSub(SubDto subDto);
 

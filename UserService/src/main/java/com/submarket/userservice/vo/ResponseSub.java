@@ -1,26 +1,17 @@
-package com.submarket.userservice.dto;
+package com.submarket.userservice.vo;
 
 import com.submarket.userservice.jpa.entity.UserEntity;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
-
-import javax.persistence.*;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class SubDto {
+@AllArgsConstructor
+public class ResponseSub {
     private Integer subSeq;
     private int itemSeq;
     private String subDate;
     private int subCount;
     private UserEntity user;
-
-    private int userSeq;
 }

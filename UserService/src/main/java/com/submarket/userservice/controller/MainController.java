@@ -60,6 +60,7 @@ public class MainController {
     @GetMapping("/test2")
     @Transactional
     public ResponseEntity<List<SubEntity>> test2() {
+
         List<SubEntity> list = new ArrayList<>();
         Iterable<SubEntity> subEntityList = subRepository.findAll();
         subEntityList.forEach(e -> {

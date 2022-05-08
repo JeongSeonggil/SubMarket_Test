@@ -20,4 +20,6 @@ public interface SubRepository extends CrudRepository<SubEntity, Integer> {
     @Query(value = "UPDATE sub_info set sub_count = sub_count + 1, sub_date = :subDate where sub_seq = :subSeq", nativeQuery = true)
     int updateSub(@Param("subDate") String subDate, @Param("subSeq") int subSeq);
 
+    List<SubEntity> findByUser(UserEntity user);
+
 }

@@ -31,6 +31,7 @@ public class SubEntity {
     private int subCount;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonIgnore
     private UserEntity user;
 
     @Builder

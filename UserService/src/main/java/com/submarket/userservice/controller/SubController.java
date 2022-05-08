@@ -1,13 +1,19 @@
 package com.submarket.userservice.controller;
 
 import com.submarket.userservice.dto.SubDto;
+import com.submarket.userservice.jpa.entity.SubEntity;
+import com.submarket.userservice.mapper.SubMapper;
 import com.submarket.userservice.service.impl.SubService;
 import com.submarket.userservice.vo.RequestSub;
+import com.submarket.userservice.vo.ResponseSub;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
@@ -18,6 +24,23 @@ public class SubController {
     @Autowired
     public SubController(SubService subService) {
         this.subService = subService;
+    }
+
+
+    @GetMapping("/sub")
+    public ResponseEntity<Object> findSub(@RequestBody RequestSub requestSub) throws Exception {
+        log.info(this.getClass().getName() + ".findSub Start!");
+
+        int userSeq = requestSub.getUserSeq();
+
+        SubDto subDto = new SubDto();
+        subDto.setUserSeq(userSeq);
+        List<SubEntity> subEntityList = subService.findSub(subDto);
+
+        return ResponseEntity.ok().body(subEntityList);
+
+
+
     }
 
     @PostMapping("/sub")
