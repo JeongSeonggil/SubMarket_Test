@@ -61,7 +61,7 @@ public class SubService implements ISubService {
 
         int res = 0;
         subDto.setUser(userRepository.findByUserId("dataofsg02")); // 수정 필요
-        subDto.setSubDate(DateUtil.getDateTime("MMdd"));
+        subDto.setSubDate(DateUtil.getDateTime("dd"));
         subDto.setSubCount(1);
         log.info("itemSeq : " + subDto.getItemSeq());
 
@@ -82,7 +82,7 @@ public class SubService implements ISubService {
     public int updateSub(SubDto subDto) {
         log.info(this.getClass().getName() + ".updateSub Start!");
 
-        String date = DateUtil.getDateTime(DateUtil.getDateTime("MMdd"));
+        String date = DateUtil.getDateTime(DateUtil.getDateTime("dd"));
         int res = subRepository.updateSub(date, subDto.getSubSeq());
 
 

@@ -22,4 +22,7 @@ public interface SubRepository extends CrudRepository<SubEntity, Integer> {
 
     List<SubEntity> findByUser(UserEntity user);
 
+    @Transactional
+    @Query(value = "SELECT * FROM sub_info WHERE sub_date = :subDate", nativeQuery = true)
+    Iterable<SubEntity> findUpdateSub(String subDate);
 }

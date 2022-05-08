@@ -37,6 +37,18 @@ public class SubController {
         subDto.setUserSeq(userSeq);
         List<SubEntity> subEntityList = subService.findSub(subDto);
 
+        if (subEntityList == null) {
+            log.info("SubService Check");
+
+            return ResponseEntity.status(500).body("Service Error");
+        }
+
+        List<SubDto> subDtoList = new ArrayList<>();
+
+        subEntityList.forEach(subEntity -> {
+            subDtoList.add(SubMapper.INSTANCE.subEntityToSubDto(subEntity));
+        });
+
         return ResponseEntity.ok().body(subEntityList);
 
 
