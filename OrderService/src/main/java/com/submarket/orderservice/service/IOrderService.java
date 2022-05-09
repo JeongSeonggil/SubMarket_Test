@@ -8,8 +8,8 @@ public interface IOrderService {
 
     int insertOrder(OrderDto orderDto) throws Exception;
 
-    List<OrderDto>  findAllOrder(int orderSeq) throws Exception;
+    List<OrderDto>  findAllOrder(int userSeq) throws Exception;
 
-    OrderDto findOneOrder(int userSeq) throws Exception;
+    OrderDto findOneOrder(int orderSeq) throws Exception;
 
 }

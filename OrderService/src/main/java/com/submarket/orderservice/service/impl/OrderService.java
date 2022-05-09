@@ -27,12 +27,15 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<OrderDto> findAllOrder(int orderSeq) throws Exception {
-        return null;
+    public List<OrderDto> findAllOrder(int userSeq) throws Exception {
+
+        List<OrderDto> orderDtoList = orderMapper.findAllOrder(userSeq);
+
+        return orderDtoList;
     }
 
     @Override
-    public OrderDto findOneOrder(int userSeq) throws Exception {
+    public OrderDto findOneOrder(int orderSeq) throws Exception {
         return null;
     }
 }

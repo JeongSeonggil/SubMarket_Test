@@ -5,6 +5,7 @@ import com.submarket.orderservice.service.impl.OrderService;
 import com.submarket.orderservice.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +18,8 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
-    @GetMapping("/order/{order-seq}") // 주문 정보 가져오가
-    public ResponseEntity<OrderDto> findOneOrder(@PathVariable("order-seq") int orderSeq) throws Exception {
+    @GetMapping("/order/{orderSeq}") // 주문 정보 가져오가
+    public ResponseEntity<OrderDto> findOneOrder(@PathVariable() int orderSeq) throws Exception {
         log.info(this.getClass().getName() + "findOneOrder Start!");
 
 
@@ -29,14 +30,22 @@ public class OrderController {
     }
 
 
-    @GetMapping("/order") // 주문 내역 확인 (token 에서 사용자 Seq 가져오기)
-    public ResponseEntity<List<OrderDto>> findAllOrder() throws Exception {
+    @GetMapping("/order/user/{user-seq}") // 주문 내역 확인 (token 에서 사용자 Seq 가져오기)
+    public ResponseEntity<List<OrderDto>> findAllOrder(@PathVariable("user-seq") String userSeq) throws Exception {
         log.info(this.getClass().getName() + "findAllOrder Start!");
+
+        List<OrderDto> orderDtoList = orderService.findAllOrder(Integer.parseInt(userSeq));
+
+        if (orderDtoList.isEmpty()) {
+            log.info("주문 없음");
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
 
 
         log.info(this.getClass().getName() + "findAllOrder End!");
 
-        return null;
+        return ResponseEntity.status(HttpStatus.OK).body(orderDtoList);
     }
 
 
