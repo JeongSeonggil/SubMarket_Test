@@ -1,21 +1,15 @@
 package com.submarket.orderservice.controller;
 
-import com.submarket.orderservice.service.impl.MongoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @Slf4j
 @RequiredArgsConstructor
 public class MainController {
-    private final MongoService mongoService;
     private final Environment env;
 
     @GetMapping("/health")

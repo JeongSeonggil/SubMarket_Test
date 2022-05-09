@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderDto {
 
-    private int orderSeq;
+    private String orderId;
     private int itemSeq;
     private int userSeq;
     private int sellerSeq;

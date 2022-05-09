@@ -18,23 +18,27 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
-    @GetMapping("/order/{orderSeq}") // 주문 정보 가져오가
-    public ResponseEntity<OrderDto> findOneOrder(@PathVariable() int orderSeq) throws Exception {
+    @GetMapping("/order/{orderId}") // 주문 정보 가져오기
+    public ResponseEntity<OrderDto> findOneOrder(@PathVariable("orderId") String orderId) throws Exception {
         log.info(this.getClass().getName() + "findOneOrder Start!");
+        OrderDto orderDto = new OrderDto();
+        orderDto.setOrderId(String.valueOf(orderId));
 
-
+        OrderDto rOrderDto = orderService.findOneOrder(orderDto);
         log.info(this.getClass().getName() + "findOneOrder End!");
 
 
-        return null;
+        return ResponseEntity.status(HttpStatus.FOUND).body(rOrderDto);
     }
 
 
-    @GetMapping("/order/user/{user-seq}") // 주문 내역 확인 (token 에서 사용자 Seq 가져오기)
-    public ResponseEntity<List<OrderDto>> findAllOrder(@PathVariable("user-seq") String userSeq) throws Exception {
+    @GetMapping("/order/user/{userSeq}") // 주문 내역 확인 (token 에서 사용자 Seq 가져오기)
+    public ResponseEntity<List<OrderDto>> findAllOrder(@PathVariable("userSeq") String userSeq) throws Exception {
         log.info(this.getClass().getName() + "findAllOrder Start!");
+        OrderDto orderDto = new OrderDto();
+        orderDto.setUserSeq(Integer.parseInt(userSeq));
 
-        List<OrderDto> orderDtoList = orderService.findAllOrder(Integer.parseInt(userSeq));
+        List<OrderDto> orderDtoList = orderService.findAllOrder(orderDto);
 
         if (orderDtoList.isEmpty()) {
             log.info("주문 없음");
@@ -52,12 +56,10 @@ public class OrderController {
     @PostMapping("/order")
     public ResponseEntity<String> insertOrder(@RequestBody OrderDto orderDto) throws Exception {
         log.info(this.getClass().getName() + ".insertOrder Start!");
-        // OrderSeq : 주문 식별자 (수정)
-        orderDto.setOrderDate(String.valueOf(new Date()));
 
         orderService.insertOrder(orderDto);
 
         log.info(this.getClass().getName() + ".insertOrder End!");
-        return null;
+        return ResponseEntity.status(HttpStatus.CREATED).body("주문 생성 완료");
     }
 }

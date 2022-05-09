@@ -40,24 +40,55 @@ public class OrderMapper extends AbstractMongoDBComon implements IOrderMapper {
     }
 
     @Override
-    public OrderDto findOneOrder(int OrderSeq) throws Exception {
-        return null;
+    public OrderDto findOneOrder(OrderDto orderDto) throws Exception {
+        log.info(this.getClass().getName() + "findOneOrder Start!");
+
+        String orderId = orderDto.getOrderId();
+
+        MongoCollection<Document> col = mongodb.getCollection("OrderService");
+
+        Document query = new Document();
+        query.append("orderId", orderId);
+
+        Document projection = new Document();
+        projection.append("orderId", "$orderId");
+        projection.append("userSeq", "$userSeq");
+        projection.append("itemSeq", "$itemSeq");
+        projection.append("sellerSeq", "$sellerSeq");
+        projection.append("orderDate", "$orderDate");
+
+        FindIterable<Document> findIterable = col.find(query).projection(projection);
+
+        OrderDto rOrderDto = new OrderDto();
+        findIterable.forEach(document -> {
+            rOrderDto.setOrderId(document.getString("orderId"));
+            rOrderDto.setItemSeq(document.getInteger("itemSeq"));
+            rOrderDto.setUserSeq(document.getInteger("userSeq"));
+            rOrderDto.setSellerSeq(document.getInteger("sellerSeq"));
+            rOrderDto.setOrderDate(CmmUtil.nvl(document.getString("orderDate")));
+        });
+
+        log.info(this.getClass().getName() + "findOneOrder End!");
+        return rOrderDto;
     }
 
     @Override
-    public List<OrderDto> findAllOrder(int userSeq) throws Exception {
+    public List<OrderDto> findAllOrder(OrderDto orderDto) throws Exception {
+
+        int userSeq = orderDto.getUserSeq();
+
         log.info(this.getClass().getName() + "findAllOrder Start!");
         List<OrderDto> orderDtoList = new LinkedList<>();
 
         MongoCollection<Document> col = mongodb.getCollection("OrderService");
 
         Document projection = new Document();
-        projection.append("orderSeq", "$orderSeq");
+        projection.append("orderId", "$orderId");
         projection.append("userSeq", "$userSeq");
         projection.append("itemSeq", "$itemSeq");
         projection.append("sellerSeq", "$sellerSeq");
         projection.append("orderDate", "$orderDate");
-        projection.append("_id", "0");
+//        projection.append("_id", "0");
 
         Document query = new Document();
         query.append("userSeq", userSeq);
@@ -71,14 +102,14 @@ public class OrderMapper extends AbstractMongoDBComon implements IOrderMapper {
                 document = new Document();
             }
 
-            OrderDto orderDto = new OrderDto();
-            orderDto.setOrderSeq(document.getInteger("orderSeq"));
-            orderDto.setItemSeq(document.getInteger("itemSeq"));
-            orderDto.setUserSeq(document.getInteger("userSeq"));
-            orderDto.setSellerSeq(document.getInteger("sellerSeq"));
-            orderDto.setOrderDate(CmmUtil.nvl(document.getString("orderDate")));
+            OrderDto forOrderDto = new OrderDto();
+            forOrderDto.setOrderId(document.getString("orderId"));
+            forOrderDto.setItemSeq(document.getInteger("itemSeq"));
+            forOrderDto.setUserSeq(document.getInteger("userSeq"));
+            forOrderDto.setSellerSeq(document.getInteger("sellerSeq"));
+            forOrderDto.setOrderDate(CmmUtil.nvl(document.getString("orderDate")));
 
-            orderDtoList.add(orderDto);
+            orderDtoList.add(forOrderDto);
         });
 
         log.info(this.getClass().getName() + "findAllOrder End!");

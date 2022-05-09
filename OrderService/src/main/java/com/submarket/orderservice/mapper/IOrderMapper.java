@@ -8,8 +8,8 @@ public interface IOrderMapper {
 
     int insertOrder(OrderDto orderDto, String colNm) throws Exception;
 
-    OrderDto findOneOrder(int OrderSeq) throws Exception;
+    OrderDto findOneOrder(OrderDto orderDto) throws Exception;
 
-    List<OrderDto> findAllOrder(int userSeq) throws Exception;
+    List<OrderDto> findAllOrder(OrderDto orderDto) throws Exception;
 
 }
