@@ -6,6 +6,7 @@ import com.submarket.userservice.jpa.UserRepository;
 import com.submarket.userservice.jpa.entity.UserEntity;
 import com.submarket.userservice.mapper.UserMapper;
 import com.submarket.userservice.service.impl.MailService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -17,20 +18,12 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class MainController {
-    private Environment env;
-    private MailService mailService;
-    private UserRepository userRepository;
-    private SubRepository subRepository;
-
-    @Autowired
-    public MainController(Environment env, MailService mailService, UserRepository userRepository,
-                          SubRepository subRepository) {
-        this.env = env;
-        this.mailService = mailService;
-        this.userRepository = userRepository;
-        this.subRepository = subRepository;
-    }
+    private final Environment env;
+    private final MailService mailService;
+    private final UserRepository userRepository;
+    private final SubRepository subRepository;
 
 
     @GetMapping("/health")

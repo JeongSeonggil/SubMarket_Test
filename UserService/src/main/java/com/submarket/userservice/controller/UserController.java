@@ -7,6 +7,7 @@ import com.submarket.userservice.service.impl.UserService;
 import com.submarket.userservice.util.TokenUtil;
 import com.submarket.userservice.vo.RequestChangePassword;
 import com.submarket.userservice.vo.RequestUser;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -17,19 +18,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 public class UserController {
-    private UserService userService;
-    private UserCheckService userCheckService;
-    private Environment env;
-
-
-    @Autowired
-    public UserController(UserService userService, UserCheckService userCheckService,
-                          Environment env) {
-        this.userService = userService;
-        this.userCheckService = userCheckService;
-        this.env = env;
-    }
+    private final UserService userService;
+    private final UserCheckService userCheckService;
+    private final Environment env;
 
     /**<---------------------->회원가입</---------------------->*/
     @PostMapping("/users")

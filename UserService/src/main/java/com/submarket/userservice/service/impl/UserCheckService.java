@@ -3,6 +3,7 @@ package com.submarket.userservice.service.impl;
 import com.submarket.userservice.jpa.UserRepository;
 import com.submarket.userservice.jpa.entity.UserEntity;
 import com.submarket.userservice.service.IUserCheckService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,15 +12,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserCheckService implements IUserCheckService {
-    private UserRepository userRepository;
-    private BCryptPasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserCheckService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
     /**<-------------------------->If (UserEntity == null) ==> return 0 </-------------------------->*/
     @Override
     public boolean checkUserByUserId(String userId) {

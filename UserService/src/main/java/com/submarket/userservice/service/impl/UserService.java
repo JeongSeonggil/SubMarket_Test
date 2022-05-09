@@ -5,6 +5,7 @@ import com.submarket.userservice.jpa.UserRepository;
 import com.submarket.userservice.jpa.entity.UserEntity;
 import com.submarket.userservice.mapper.UserMapper;
 import com.submarket.userservice.service.IUserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,20 +19,12 @@ import java.util.ArrayList;
 
 @Service("UserService")
 @Slf4j
+@RequiredArgsConstructor
 public class UserService implements IUserService {
-    private UserRepository userRepository;
-    private BCryptPasswordEncoder passwordEncoder;
-    private UserCheckService userCheckService;
-    private MailService mailService;
-
-    @Autowired
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder,
-                       UserCheckService userCheckService, MailService mailService) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.userCheckService = userCheckService;
-        this.mailService = mailService;
-    }
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final UserCheckService userCheckService;
+    private final MailService mailService;
 
     //####################################### 회원가입 #######################################//
     @Override

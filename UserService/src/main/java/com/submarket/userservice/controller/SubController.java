@@ -6,6 +6,7 @@ import com.submarket.userservice.mapper.SubMapper;
 import com.submarket.userservice.service.impl.SubService;
 import com.submarket.userservice.vo.RequestSub;
 import com.submarket.userservice.vo.ResponseSub;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,13 +19,9 @@ import java.util.List;
 
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 public class SubController {
-    private SubService subService;
-
-    @Autowired
-    public SubController(SubService subService) {
-        this.subService = subService;
-    }
+    private final SubService subService;
 
 
     @GetMapping("/sub")

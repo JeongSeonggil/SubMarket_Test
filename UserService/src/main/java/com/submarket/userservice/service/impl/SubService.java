@@ -10,6 +10,7 @@ import com.submarket.userservice.mapper.SubMapper;
 import com.submarket.userservice.mapper.UserMapper;
 import com.submarket.userservice.service.ISubService;
 import com.submarket.userservice.util.DateUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +23,13 @@ import java.util.Optional;
 
 @Service(value = "SubService")
 @Slf4j
+@RequiredArgsConstructor
 public class SubService implements ISubService {
-    private SubRepository subRepository;
-    private UserRepository userRepository;
-    private UserService userService;
+    private final SubRepository subRepository;
+    private final UserRepository userRepository;
+    private final UserService userService;
 
-    @Autowired
-    public SubService(SubRepository subRepository, UserService userService, UserRepository userRepository) {
-        this.subRepository = subRepository;
-        this.userService = userService;
-        this.userRepository = userRepository;
-    }
+
     /** ------------------------- 구독 조회 ------------------------------*/
     @Override
     public List<SubEntity> findSub(SubDto subDto) throws RuntimeException{

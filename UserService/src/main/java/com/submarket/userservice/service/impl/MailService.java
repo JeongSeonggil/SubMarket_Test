@@ -2,6 +2,7 @@ package com.submarket.userservice.service.impl;
 
 import com.submarket.userservice.jpa.SubRepository;
 import com.submarket.userservice.jpa.entity.SubEntity;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -15,18 +16,13 @@ import java.util.Optional;
 
 @Slf4j
 @Service(value = "MailService")
+@RequiredArgsConstructor
 public class MailService {
-    private Environment env;
-    private SubRepository subRepository;
+    private final Environment env;
+    private final SubRepository subRepository;
 
     @Autowired
     private JavaMailSender javaMailSender;
-
-    @Autowired
-    public MailService(Environment env, SubRepository subRepository) {
-        this.subRepository = subRepository;
-        this.env = env;
-    }
 
     @Async
     public void sendMail(String mailAddress, String title, String mailMessage) {
