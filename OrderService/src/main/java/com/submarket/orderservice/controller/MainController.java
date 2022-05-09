@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -24,15 +26,5 @@ public class MainController {
                 + ", port(server.port) : " + env.getProperty("server.port")
                 + ", token secret : " + env.getProperty("token.secret")
                 + ", token expiration time : " + env.getProperty("token.expiration_time");
-    }
-
-    @GetMapping("/test")
-    public ResponseEntity<String> test() throws Exception {
-        log.info(this.getClass().getName() + ".test Start!");
-
-        mongoService.mongoTest();
-
-        log.info(this.getClass().getName() + ".test End!");
-        return ResponseEntity.ok().body("Test");
     }
 }
