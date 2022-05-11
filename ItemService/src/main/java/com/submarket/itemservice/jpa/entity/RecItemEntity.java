@@ -6,23 +6,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Entity
-@Table(name = "groupInfo")
-public class GroupEntity {
+@Table(name = "recItemInfo")
+public class RecItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int groupSeq;
+    private Integer recItemSeq;
 
-    @Column(nullable = false, length = 300)
+    @Column(nullable = false)
+    private int userSeq;
 
-    private String groupName;
-
-    @OneToMany(mappedBy = "group")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<ItemEntity> items;
+    private ItemEntity item;
 }
