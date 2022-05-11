@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "userInfo")
 @JsonIgnoreProperties({"subEntityList"})
+@Builder
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,21 +49,4 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user")
     private List<SubEntity> subEntityList;
-
-    @Builder
-    private UserEntity(String userId, String userPassword, String userName, String userEmail,
-                       String userAge, String userPn,
-                       int userStatus, String userAddress, String userAddress2,
-                       List<SubEntity> subEntityList) {
-        this.userId = userId;
-        this.userPassword = userPassword;
-        this.userName = userName;
-        this.userEmail = userEmail;
-        this.userAge = userAge;
-        this.userPn = userPn;
-        this.userStatus = userStatus;
-        this.userAddress = userAddress;
-        this.userAddress2 = userAddress2;
-        this.subEntityList = subEntityList;
-    }
 }

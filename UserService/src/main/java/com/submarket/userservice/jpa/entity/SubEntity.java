@@ -15,6 +15,7 @@ import java.util.Date;
 @Entity
 @Table(name = "subInfo")
 @JsonIgnoreProperties({"user"})
+@Builder
 public class SubEntity {
 
     @Id
@@ -33,12 +34,4 @@ public class SubEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JsonIgnore
     private UserEntity user;
-
-    @Builder
-    public SubEntity(String subDate, int subCount, UserEntity user, int itemSeq) {
-        this.subCount = subCount;
-        this.subDate = subDate;
-        this.user = user;
-        this.itemSeq = itemSeq;
-    }
 }
