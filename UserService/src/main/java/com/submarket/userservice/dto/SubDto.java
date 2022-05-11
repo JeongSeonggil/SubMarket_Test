@@ -14,7 +14,6 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class SubDto {
     private Integer subSeq;
     private int itemSeq;
