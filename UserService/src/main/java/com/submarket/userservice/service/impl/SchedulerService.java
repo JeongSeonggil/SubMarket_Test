@@ -41,7 +41,7 @@ public class SchedulerService {
             subDto.setSubSeq(subEntity.getSubSeq());
 
 
-            /** 결제 모듈 추가 */
+            // TODO: 2022/05/11 결제 추가
 
 
             // 구독 업데이트
