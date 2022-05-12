@@ -93,7 +93,10 @@ public class UserService implements IUserService {
             throw new UsernameNotFoundException(userId);
         }
 
-        UserDto rDTO = new ModelMapper().map(rEntity, UserDto.class);
+        UserDto rDTO = new UserDto();
+        rDTO.setUserId(rEntity.getUserId());
+        rDTO.setUserPassword(rEntity.getUserPassword());
+
         return rDTO;
     }
 
