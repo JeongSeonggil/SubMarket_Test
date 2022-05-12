@@ -2,6 +2,7 @@ package com.submarket.sellerservice.mapper;
 
 import com.submarket.sellerservice.dto.SellerDTO;
 import com.submarket.sellerservice.jpa.entity.SellerEntity;
+import com.submarket.sellerservice.vo.RequestSellerInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -13,5 +14,7 @@ public interface SellerMapper {
     @Mapping(source = "sellerEncPassword", target = "sellerPassword")
     SellerEntity sellerDTOToSellerEntity(SellerDTO sellerDTO);
 
-    SellerDTO sellerEntityToSellerDTO(SellerEntity sellEntity);
+    SellerDTO sellerEntityToSellerDto(SellerEntity sellEntity);
+
+    SellerDTO requestSellerInfoToSellerDto(RequestSellerInfo requestSellerInfo);
 }

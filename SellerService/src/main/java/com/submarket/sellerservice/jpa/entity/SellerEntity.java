@@ -9,8 +9,10 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
 @Table(name = "sellerInfo")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class SellerEntity {
 
     @Id
@@ -47,19 +49,4 @@ public class SellerEntity {
     @Column(nullable = false, length = 10) // 사업자 활성화 상태 (1 : on , 0 : off)
     private int sellerStatus;
 
-    @Builder
-    private SellerEntity(String sellerId, String sellerPassword, String businessId,
-                         String sellerPn, String sellerEmail, String sellerAddress, String sellerAddress2,
-                         String sellerHome, String sellerName, int sellerStatus) {
-        this.sellerId = sellerId;
-        this.sellerPassword = sellerPassword;
-        this.businessId = businessId;
-        this.sellerPn = sellerPn;
-        this.sellerEmail = sellerEmail;
-        this.sellerAddress = sellerAddress;
-        this.sellerAddress2 = sellerAddress2;
-        this.sellerHome = sellerHome;
-        this.sellerName = sellerName;
-        this.sellerStatus = sellerStatus;
-    }
 }

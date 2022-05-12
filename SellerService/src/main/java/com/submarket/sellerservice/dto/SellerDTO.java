@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class SellerDTO {
     private int sellerSeq;
     private String sellerId;
-    private String sellePassword;
+    private String sellerPassword;
     private String sellerEncPassword;
     private String businessId;
     private String sellerPn;
@@ -19,5 +19,5 @@ public class SellerDTO {
     private String sellerAddress2;
     private String sellerHome;
     private String sellerName;
-    private String sellerStatus;
+    private int sellerStatus;
 }
