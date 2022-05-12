@@ -9,8 +9,13 @@ import com.submarket.sellerservice.service.ISellerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service(value = "SellerService")
 @AllArgsConstructor
@@ -50,5 +55,33 @@ public class SellerService implements ISellerService {
         log.info(this.getClass().getName() + ".createSeller End!");
 
         return 1;
+    }
+
+    //####################################### JWT Don't change #######################################//
+    @Override
+    public SellerDTO getSellerDetailsByUserId(String sellerId) {
+        SellerEntity rEntity = sellerRepository.findBySellerId(sellerId);
+
+        if (rEntity == null) {
+            throw new UsernameNotFoundException(sellerId);
+        }
+
+        SellerDTO rDTO = SellerMapper.INSTANCE.sellerEntityToSellerDto(rEntity);
+
+        return rDTO;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String sellerId) throws UsernameNotFoundException {
+        log.info("sellerName : " + sellerId);
+        SellerEntity rEntity = sellerRepository.findBySellerId(sellerId);
+
+        if (rEntity == null) {
+            throw new UsernameNotFoundException(sellerId);
+        }
+
+        return new User(rEntity.getSellerId(), rEntity.getSellerPassword(),
+                true, true, true, true,
+                new ArrayList<>());
     }
 }
