@@ -6,6 +6,7 @@ import com.submarket.sellerservice.service.impl.SellerService;
 import com.submarket.sellerservice.vo.RequestLogin;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,9 +25,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 @Slf4j
+@RequiredArgsConstructor
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private SellerService sellerService;
-    private Environment env;
+    private final SellerService sellerService;
+    private final Environment env;
 
     public AuthenticationFilter(AuthenticationManager authenticationManager,
                                 SellerService sellerService, Environment env) {

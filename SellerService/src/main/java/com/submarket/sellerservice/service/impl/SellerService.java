@@ -7,6 +7,7 @@ import com.submarket.sellerservice.mapper.SellerMapper;
 import com.submarket.sellerservice.service.ISellerCheckService;
 import com.submarket.sellerservice.service.ISellerService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.security.core.userdetails.User;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
 @Service(value = "SellerService")
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class SellerService implements ISellerService {
     private final SellerRepository sellerRepository;

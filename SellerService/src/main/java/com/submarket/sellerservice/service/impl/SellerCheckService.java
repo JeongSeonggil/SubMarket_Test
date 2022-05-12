@@ -4,10 +4,11 @@ import com.submarket.sellerservice.jpa.SellerRepository;
 import com.submarket.sellerservice.jpa.entity.SellerEntity;
 import com.submarket.sellerservice.service.ISellerCheckService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service("SellerCheckService")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SellerCheckService implements ISellerCheckService {
     private final SellerRepository sellerRepository;
 
