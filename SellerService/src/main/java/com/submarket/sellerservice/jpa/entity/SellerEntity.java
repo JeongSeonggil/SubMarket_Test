@@ -22,7 +22,7 @@ public class SellerEntity {
     @Column(nullable = false, length = 40, unique = true)
     private String sellerId;
 
-    @Column(nullable = false, length = 200, unique = true)
+    @Column(nullable = false, length = 200)
     private String sellerPassword;
 
     @Column(nullable = false, length = 100, unique = true) // 사업자 등록 번호
