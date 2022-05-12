@@ -25,21 +25,20 @@ public class SellerController {
     private final SellerService sellerService;
 
     @PostMapping("/sellers")
-    public ResponseEntity<String> createSeller(@RequestBody RequestSellerInfo sellerInfo) {
+    public ResponseEntity<String> createSeller(@RequestBody RequestSellerInfo sellerInfo) throws Exception{
         log.info(this.getClass().getName() + ".createSeller Start!");
 
         SellerDTO sellerDTO = SellerMapper.INSTANCE.requestSellerInfoToSellerDto(sellerInfo);
         log.info("sellerPassword : " + sellerDTO.getSellerPassword());
 
-        try {
-            int res = sellerService.createSeller(sellerDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
+        int res = sellerService.createSeller(sellerDTO);
+
+        if (res == 1) {
+            // 회원가입 성공
+            return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 성공");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원가입 실패");
         }
-
-
-
-        log.info(this.getClass().getName() + ".createSeller End!");
-        return ResponseEntity.status(HttpStatus.CREATED).body("save");
     }
 }
+
