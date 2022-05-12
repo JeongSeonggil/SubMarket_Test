@@ -26,30 +26,29 @@ public class SellerService implements ISellerService {
         log.info(this.getClass().getName() + ".createSeller Start!");
         String sellerId = sellerDTO.getSellerId();
         String sellerEmail = sellerDTO.getSellerEmail();
+        String businessId = sellerDTO.getBusinessId();
 
         if (sellerCheckService.checkSellerBySellerId(sellerId)) {
             if (sellerCheckService.checkSellerBySellerEmail(sellerEmail)) {
-                // TODO: 2022/05/11 이메일 중복 학인
-
-                if (true) {
-                    // TODO: 2022/05/11 사업자 번호 중복 확인
+                if (sellerCheckService.checkSellerByBusinessId(businessId)) {
                     // All pass, 회원가입 로직 실행
                     sellerDTO.setSellerEncPassword(passwordEncoder.encode(sellerDTO.getSellerPassword()));
                     sellerDTO.setSellerStatus(1);
                     SellerEntity sellerEntity = SellerMapper.INSTANCE.sellerDTOToSellerEntity(sellerDTO);
                     sellerRepository.save(sellerEntity);
 
-                } else { // TODO: 2022/05/12 Exception 변경
-                    throw new Exception("사업자 번호 중복");
+// TODO: 2022/05/12 Exception 변경
+                } else {
+                    throw new RuntimeException("사업자 번호 중복");
                 }
             } else {
-                throw new Exception("이메일 중복");
+                throw new RuntimeException("이메일 중복");
             }
         } else {
-            throw new Exception("아이디 중복");
+            throw new RuntimeException("아이디 중복");
         }
-
         log.info(this.getClass().getName() + ".createSeller End!");
-        return 0;
+
+        return 1;
     }
 }

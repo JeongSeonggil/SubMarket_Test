@@ -7,4 +7,6 @@ public interface SellerRepository extends CrudRepository<SellerEntity, Integer> 
     SellerEntity findBySellerId(String sellerId);
 
     SellerEntity findBySellerEmail(String sellerEmail);
+
+    SellerEntity findByBusinessId(String businessId);
 }

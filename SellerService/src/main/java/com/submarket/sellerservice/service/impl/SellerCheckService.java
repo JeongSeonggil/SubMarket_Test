@@ -35,4 +35,16 @@ public class SellerCheckService implements ISellerCheckService {
 
         return false;
     }
+
+    @Override
+    public boolean checkSellerByBusinessId(String businessId) throws Exception {
+
+        SellerEntity sellerEntity = sellerRepository.findByBusinessId(businessId);
+
+        if (sellerEntity == null) {
+            return true;
+        }
+
+        return false;
+    }
 }
