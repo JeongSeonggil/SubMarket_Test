@@ -25,9 +25,10 @@ public class SellerService implements ISellerService {
     public int createSeller(SellerDTO sellerDTO) throws Exception {
         log.info(this.getClass().getName() + ".createSeller Start!");
         String sellerId = sellerDTO.getSellerId();
+        String sellerEmail = sellerDTO.getSellerEmail();
 
         if (sellerCheckService.checkSellerBySellerId(sellerId)) {
-            if (true) {
+            if (sellerCheckService.checkSellerBySellerEmail(sellerEmail)) {
                 // TODO: 2022/05/11 이메일 중복 학인
 
                 if (true) {

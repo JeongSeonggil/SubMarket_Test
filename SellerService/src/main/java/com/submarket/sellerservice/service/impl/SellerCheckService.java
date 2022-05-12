@@ -23,4 +23,16 @@ public class SellerCheckService implements ISellerCheckService {
 
         return false;
     }
+
+    @Override
+    public boolean checkSellerBySellerEmail(String sellerEmail) throws Exception {
+
+        SellerEntity sellerEntity = sellerRepository.findBySellerEmail(sellerEmail);
+
+        if (sellerEntity == null) {
+            return true;
+        }
+
+        return false;
+    }
 }
