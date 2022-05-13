@@ -1,17 +1,21 @@
 package com.submarket.itemservice.jpa.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Getter
+@Builder
 @Table(name = "itemReviewInfo")
+@JsonIgnoreProperties({"item"})
 public class ItemReviewEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +33,9 @@ public class ItemReviewEntity {
     @Column(nullable = false)
     private String reviewDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
-    private ItemEntity item;
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JsonIgnore
+//    private ItemEntity item;
+
+    // TODO: 2022/05/14 리뷰 로직 추가 
 }

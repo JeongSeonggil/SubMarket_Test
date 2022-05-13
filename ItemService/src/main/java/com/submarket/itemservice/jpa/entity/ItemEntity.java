@@ -3,6 +3,7 @@ package com.submarket.itemservice.jpa.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,8 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 @Entity
 @Table(name = "itemInfo")
+@JsonIgnoreProperties({"category", "group"})
 public class ItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,14 +40,14 @@ public class ItemEntity {
     @Column(nullable = false)
     private int itemStatus;
 
-    @OneToMany(mappedBy = "item")
-    private List<ItemReviewEntity> reviews;
+//    @OneToMany(mappedBy = "item")
+//    private List<ItemReviewEntity> reviews;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JsonIgnore
     private CategoryEntity category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JsonIgnore
     private GroupEntity group;
 

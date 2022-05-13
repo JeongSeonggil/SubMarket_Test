@@ -2,6 +2,7 @@ package com.submarket.itemservice.controller;
 
 import com.submarket.itemservice.dto.CategoryDto;
 import com.submarket.itemservice.jpa.CategoryRepository;
+import com.submarket.itemservice.jpa.ItemRepository;
 import com.submarket.itemservice.jpa.entity.CategoryEntity;
 import com.submarket.itemservice.mapper.CategoryMapper;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @RestController
@@ -32,13 +33,18 @@ public class MainController {
     }
 
     @GetMapping("/test")
-    public ResponseEntity<CategoryEntity> test() throws Exception {
+    @Transactional
+    public CategoryEntity test() throws Exception {
 
-        Optional<CategoryEntity> categoryEntity = categoryRepository.findById(1);
+        Optional<CategoryEntity> category = categoryRepository.findById(1);
 
-        CategoryEntity categoryEntity1 = categoryEntity.get();
+        CategoryEntity categoryEntity = category.get();
+
+        CategoryDto categoryDto = new CategoryDto();
+
+        categoryDto = CategoryMapper.INSTANCE.categoryEntityToCategoryDto(categoryEntity);
 
 
-        return ResponseEntity.ok().body(categoryEntity1);
+        return categoryEntity;
     }
 }
