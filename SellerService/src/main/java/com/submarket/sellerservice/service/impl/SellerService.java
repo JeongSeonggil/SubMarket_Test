@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service(value = "SellerService")
 @RequiredArgsConstructor
@@ -56,6 +58,24 @@ public class SellerService implements ISellerService {
         log.info(this.getClass().getName() + ".createSeller End!");
 
         return 1;
+    }
+
+    @Override
+    public SellerDTO getSellerInfo(int sellerSeq) throws Exception {
+        log.info(this.getClass().getName() + ".getSellerInfo Start!");
+
+        Optional<SellerEntity> sellerEntityOptional = sellerRepository.findById(sellerSeq);
+
+        SellerEntity sellerEntity = sellerEntityOptional.get();
+
+        if (sellerEntity == null) {
+            throw new RuntimeException("정보를 찾을 수 없습니다");
+        }
+
+        SellerDTO sellerDTO = SellerMapper.INSTANCE.sellerEntityToSellerDto(sellerEntity);
+
+        log.info(this.getClass().getName() + ".getSellerInfo End!");
+        return sellerDTO;
     }
 
     //####################################### JWT Don't change #######################################//
