@@ -1,6 +1,7 @@
 package com.submarket.itemservice.jpa.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "itemReviewInfo")
+@JsonIgnoreProperties({"item"})
 public class ItemReviewEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
