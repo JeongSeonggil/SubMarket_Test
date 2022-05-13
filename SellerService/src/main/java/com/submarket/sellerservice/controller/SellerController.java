@@ -4,6 +4,7 @@ import com.submarket.sellerservice.dto.SellerDTO;
 import com.submarket.sellerservice.mapper.SellerMapper;
 import com.submarket.sellerservice.service.impl.SellerService;
 import com.submarket.sellerservice.vo.RequestSellerInfo;
+import com.submarket.sellerservice.vo.ResponseSellerInfo;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,6 +58,20 @@ public class SellerController {
 
 
         return ResponseEntity.status(HttpStatus.OK).body("회원 탈퇴 완료");
+    }
+    @GetMapping("/seller")
+    public ResponseEntity<ResponseSellerInfo> getSellerInfo(@RequestBody RequestSellerInfo sellerInfo) throws Exception {
+        log.info(this.getClass().getName() + ".getSellerInfo Start!");
+        int sellerSeq = sellerInfo.getSellerSeq();
+
+        SellerDTO sellerDTO = sellerService.getSellerInfo(sellerSeq);
+
+        ResponseSellerInfo responseSellerInfo = SellerMapper.INSTANCE.sellerDtoToResponseSellerInfo(sellerDTO);
+
+
+        log.info(this.getClass().getName() + ".getSellerInfo End!");
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseSellerInfo);
     }
 }
 
