@@ -14,6 +14,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +45,20 @@ public class SellerController {
         }
     }
 
+    @PostMapping("/sellers/drop")
+    public ResponseEntity<String> deleteSeller(@RequestBody RequestSellerInfo requestSellerInfo) throws Exception {
+        log.info(this.getClass().getName() + ".deleteSeller Start!");
+        SellerDTO sellerDTO = new SellerDTO();
+
+        sellerDTO.setSellerId(requestSellerInfo.getSellerId());
+        sellerDTO.setSellerPassword(requestSellerInfo.getSellerPassword());
+        sellerService.deleteSeller(sellerDTO);
+
+        log.info(this.getClass().getName() + ".deleteSeller End!");
+
+
+        return ResponseEntity.status(HttpStatus.OK).body("회원 탈퇴 완료");
+    }
     @GetMapping("/seller")
     public ResponseEntity<ResponseSellerInfo> getSellerInfo(@RequestBody RequestSellerInfo sellerInfo) throws Exception {
         log.info(this.getClass().getName() + ".getSellerInfo Start!");

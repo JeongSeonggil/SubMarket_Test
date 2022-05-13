@@ -87,6 +87,10 @@ public class SellerService implements ISellerService {
             throw new UsernameNotFoundException(sellerId);
         }
 
+        // Status 확인
+        if (rEntity.getSellerStatus() == 0) {
+            throw new UsernameNotFoundException("탈퇴한 회원");
+        }
         SellerDTO rDTO = SellerMapper.INSTANCE.sellerEntityToSellerDto(rEntity);
 
         return rDTO;
@@ -104,5 +108,28 @@ public class SellerService implements ISellerService {
         return new User(rEntity.getSellerId(), rEntity.getSellerPassword(),
                 true, true, true, true,
                 new ArrayList<>());
+    }
+
+    @Override
+    public int deleteSeller(SellerDTO sellerDTO) throws Exception {
+        log.info(this.getClass().getName() + ".deleteSeller Start!");
+
+        if (sellerCheckService.checkSellerBySellerPassword(sellerDTO)) {
+            // 일치한다면 진행
+            SellerEntity sellerEntity = sellerRepository.findBySellerId(sellerDTO.getSellerId());
+
+            if (sellerEntity.getSellerStatus() == 1) {
+                // 활성화 되어 있다면 탈퇴, Exception
+                sellerRepository.changeSellerStatus(sellerEntity.getSellerSeq());
+            } else {
+                throw new RuntimeException("이미 탈퇴한 회원입니다");
+            }
+        } else {
+            throw new UsernameNotFoundException("비밀번호 불일치");
+        }
+
+
+        log.info(this.getClass().getName() + ".deleteSeller End!");
+        return 1;
     }
 }
