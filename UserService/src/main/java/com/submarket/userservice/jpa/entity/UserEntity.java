@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "userInfo")
-@JsonIgnoreProperties({"subEntityList"})
 @Builder
 public class UserEntity {
     @Id
