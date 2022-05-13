@@ -1,16 +1,20 @@
 package com.submarket.sellerservice.service.impl;
 
+import com.submarket.sellerservice.dto.SellerDTO;
 import com.submarket.sellerservice.jpa.SellerRepository;
 import com.submarket.sellerservice.jpa.entity.SellerEntity;
 import com.submarket.sellerservice.service.ISellerCheckService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service("SellerCheckService")
 @RequiredArgsConstructor
 public class SellerCheckService implements ISellerCheckService {
     private final SellerRepository sellerRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override // 아이디 중복 확인
     public boolean checkSellerBySellerId(String sellerId) throws Exception {
@@ -47,5 +51,17 @@ public class SellerCheckService implements ISellerCheckService {
         }
 
         return false;
+    }
+
+    @Override
+    public boolean checkSellerBySellerPassword(SellerDTO sellerDTO) throws Exception {
+        String sellerPassword = sellerDTO.getSellerPassword();
+        int sellerSeq = sellerDTO.getSellerSeq();
+
+        Optional<SellerEntity> sellerEntityOptional = sellerRepository.findById(sellerSeq);
+        SellerEntity sellerEntity = sellerEntityOptional.get();
+
+        // 비밀번호가 일치하면 True
+        return passwordEncoder.matches(sellerDTO.getSellerPassword(), sellerEntity.getSellerPassword());
     }
 }
