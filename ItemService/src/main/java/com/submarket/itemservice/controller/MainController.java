@@ -35,7 +35,7 @@ public class MainController {
 
     @GetMapping("/test")
     @Transactional
-    public CategoryDto test() throws Exception {
+    public CategoryEntity test() throws Exception {
 
         Optional<CategoryEntity> category = categoryRepository.findById(1);
 
@@ -46,6 +46,6 @@ public class MainController {
         categoryDto = CategoryMapper.INSTANCE.categoryEntityToCategoryDto(categoryEntity);
 
 
-        return categoryDto;
+        return categoryEntity;
     }
 }
