@@ -56,12 +56,11 @@ public class SellerCheckService implements ISellerCheckService {
     @Override
     public boolean checkSellerBySellerPassword(SellerDTO sellerDTO) throws Exception {
         String sellerPassword = sellerDTO.getSellerPassword();
-        int sellerSeq = sellerDTO.getSellerSeq();
+        String sellerId = sellerDTO.getSellerId();
 
-        Optional<SellerEntity> sellerEntityOptional = sellerRepository.findById(sellerSeq);
-        SellerEntity sellerEntity = sellerEntityOptional.get();
+        SellerEntity sellerEntity = sellerRepository.findBySellerId(sellerId);
 
         // 비밀번호가 일치하면 True
-        return passwordEncoder.matches(sellerDTO.getSellerPassword(), sellerEntity.getSellerPassword());
+        return passwordEncoder.matches(sellerPassword, sellerEntity.getSellerPassword());
     }
 }
