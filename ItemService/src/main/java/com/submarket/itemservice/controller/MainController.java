@@ -1,10 +1,13 @@
 package com.submarket.itemservice.controller;
 
 import com.submarket.itemservice.dto.CategoryDto;
+import com.submarket.itemservice.dto.GroupDto;
 import com.submarket.itemservice.jpa.CategoryRepository;
 import com.submarket.itemservice.jpa.ItemRepository;
 import com.submarket.itemservice.jpa.entity.CategoryEntity;
 import com.submarket.itemservice.mapper.CategoryMapper;
+import com.submarket.itemservice.service.impl.GroupService;
+import com.submarket.itemservice.service.impl.ItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
@@ -21,6 +24,7 @@ public class MainController {
 
     private final Environment env;
     private final CategoryRepository categoryRepository;
+    private final ItemService itemService;
 
     @GetMapping("/health")
     public String health() {
@@ -34,7 +38,7 @@ public class MainController {
 
     @GetMapping("/test")
     @Transactional
-    public CategoryEntity test() throws Exception {
+    public CategoryDto test() throws Exception {
 
         Optional<CategoryEntity> category = categoryRepository.findById(1);
 
@@ -45,6 +49,24 @@ public class MainController {
         categoryDto = CategoryMapper.INSTANCE.categoryEntityToCategoryDto(categoryEntity);
 
 
-        return categoryEntity;
+        return categoryDto;
+    }
+
+    @GetMapping("/groupTest")
+    @Transactional
+    public GroupDto groupTest() throws Exception {
+        log.info(this.getClass().getName() + ".group Test");
+        GroupDto groupDto = new GroupDto();
+
+        groupDto.setGroupSeq(1);
+
+        GroupDto rGroupDto = itemService.findItemInfoByGroup(groupDto);
+
+        log.info("" + rGroupDto.getGroupSeq());
+        log.info("" + rGroupDto.getGroupName());
+
+
+        log.info(this.getClass().getName() + ".group Test");
+        return rGroupDto;
     }
 }

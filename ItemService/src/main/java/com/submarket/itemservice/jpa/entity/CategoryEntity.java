@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -25,7 +26,7 @@ public class CategoryEntity {
     private String categoryName;
 
     @OneToMany(mappedBy = "category")
-    List<ItemEntity> items;
+    List<ItemEntity> items = new ArrayList<>();
 
 
 
