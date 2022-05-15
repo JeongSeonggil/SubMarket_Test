@@ -35,38 +35,4 @@ public class MainController {
                 + ", token secret : " + env.getProperty("token.secret")
                 + ", token expiration time : " + env.getProperty("token.expiration_time");
     }
-
-    @GetMapping("/test")
-    @Transactional
-    public CategoryDto test() throws Exception {
-
-        Optional<CategoryEntity> category = categoryRepository.findById(1);
-
-        CategoryEntity categoryEntity = category.get();
-
-        CategoryDto categoryDto = new CategoryDto();
-
-        categoryDto = CategoryMapper.INSTANCE.categoryEntityToCategoryDto(categoryEntity);
-
-
-        return categoryDto;
-    }
-
-    @GetMapping("/groupTest")
-    @Transactional
-    public GroupDto groupTest() throws Exception {
-        log.info(this.getClass().getName() + ".group Test");
-        GroupDto groupDto = new GroupDto();
-
-        groupDto.setGroupSeq(1);
-
-        GroupDto rGroupDto = itemService.findItemInfoByGroup(groupDto);
-
-        log.info("" + rGroupDto.getGroupSeq());
-        log.info("" + rGroupDto.getGroupName());
-
-
-        log.info(this.getClass().getName() + ".group Test");
-        return rGroupDto;
-    }
 }

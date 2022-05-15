@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service("CategoryService")
@@ -21,6 +22,7 @@ public class CategoryService implements ICategoryService {
     // TODO: 2022/05/13 목록 조회
 
     @Override
+    @Transactional
     public CategoryEntity getCategoryInfo(CategoryDto categoryDto) throws Exception {
         log.info(this.getClass().getName() + ".getCategoryInfo Start!");
 
