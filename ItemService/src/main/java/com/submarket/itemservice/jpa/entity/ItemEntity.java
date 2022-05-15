@@ -21,6 +21,7 @@ import java.util.List;
 public class ItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "item_seq")
     private Integer itemSeq;
 
     @Column(nullable = false)
@@ -49,9 +50,10 @@ public class ItemEntity {
     @JsonIgnore
     private GroupEntity group;
 
-    // TODO: 2022/05/15 M : N 연결
-//    @OneToMany(mappedBy = "item")
-//    private List<ItemReviewEntity> reviews = new ArrayList<ItemReviewEntity>();
+
+    @OneToMany(mappedBy = "item")
+    @JsonIgnore
+    private List<ItemReviewEntity> reviews;
 
     // TODO: 2022/05/11 Img 등록 추가
 }

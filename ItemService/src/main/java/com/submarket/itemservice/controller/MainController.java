@@ -4,7 +4,10 @@ import com.submarket.itemservice.dto.CategoryDto;
 import com.submarket.itemservice.dto.GroupDto;
 import com.submarket.itemservice.jpa.CategoryRepository;
 import com.submarket.itemservice.jpa.ItemRepository;
+import com.submarket.itemservice.jpa.ItemReviewRepository;
 import com.submarket.itemservice.jpa.entity.CategoryEntity;
+import com.submarket.itemservice.jpa.entity.ItemEntity;
+import com.submarket.itemservice.jpa.entity.ItemReviewEntity;
 import com.submarket.itemservice.mapper.CategoryMapper;
 import com.submarket.itemservice.service.impl.GroupService;
 import com.submarket.itemservice.service.impl.ItemService;
@@ -25,6 +28,8 @@ public class MainController {
     private final Environment env;
     private final CategoryRepository categoryRepository;
     private final ItemService itemService;
+    private final ItemRepository itemRepository;
+    private final ItemReviewRepository itemReviewRepository;
 
     @GetMapping("/health")
     public String health() {

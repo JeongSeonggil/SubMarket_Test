@@ -1,5 +1,6 @@
 package com.submarket.itemservice.jpa;
 
+import com.submarket.itemservice.jpa.entity.ItemEntity;
 import com.submarket.itemservice.jpa.entity.ItemReviewEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,7 @@ public interface ItemReviewRepository extends CrudRepository<ItemReviewEntity, I
     @Override
     @Transactional
     Optional<ItemReviewEntity> findById(Integer integer);
+
+    @Transactional
+    ItemReviewEntity findByItem(ItemEntity item);
 }

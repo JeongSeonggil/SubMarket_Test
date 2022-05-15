@@ -11,9 +11,9 @@ import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 @Getter
 @Builder
+@Entity
 @Table(name = "itemReviewInfo")
 @JsonIgnoreProperties({"item"})
 public class ItemReviewEntity {
@@ -33,9 +33,7 @@ public class ItemReviewEntity {
     @Column(nullable = false)
     private String reviewDate;
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JsonIgnore
-//    private ItemEntity item;
-
-    // TODO: 2022/05/14 리뷰 로직 추가 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonIgnore
+    private ItemEntity item;
 }
