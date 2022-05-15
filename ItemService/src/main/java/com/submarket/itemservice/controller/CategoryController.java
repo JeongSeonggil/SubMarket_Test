@@ -20,7 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @GetMapping("/category/{categorySeq}") // 그룹 정보 조회
+    @GetMapping("/category")
+    public ResponseEntity<Object> findAllCategory() throws Exception {
+        return null;
+    }
+
+
+    @GetMapping("/category/{categorySeq}") // 그룹에 들어있는 상품 조회
     public ResponseEntity<CategoryDto> getCategoryInfo(@PathVariable int categorySeq) throws Exception {
         log.info(this.getClass().getName() + "getCategoryInfo Start!");
 
@@ -38,5 +44,6 @@ public class CategoryController {
         log.info(this.getClass().getName() + ".getCategoryInfo End!");
         return ResponseEntity.ok().body(categoryDto);
     }
+
 
 }
