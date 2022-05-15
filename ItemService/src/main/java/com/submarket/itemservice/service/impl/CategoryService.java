@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service("CategoryService")
@@ -21,7 +22,8 @@ public class CategoryService implements ICategoryService {
     // TODO: 2022/05/13 목록 조회
 
     @Override
-    public CategoryEntity getCategoryInfo(CategoryDto categoryDto) throws Exception {
+    @Transactional
+    public CategoryDto findItemInfoByCategory(CategoryDto categoryDto) throws Exception {
         log.info(this.getClass().getName() + ".getCategoryInfo Start!");
 
         Optional<CategoryEntity> categoryEntityOptional = categoryRepository.findById(categoryDto.getCategorySeq());
@@ -34,6 +36,6 @@ public class CategoryService implements ICategoryService {
 
         CategoryDto rCategoryDto = CategoryMapper.INSTANCE.categoryEntityToCategoryDto(categoryEntity);
         log.info(this.getClass().getName() + ".getCategoryInfo End!");
-        return categoryEntity;
+        return rCategoryDto;
     }
 }

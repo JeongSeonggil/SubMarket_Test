@@ -1,10 +1,13 @@
 package com.submarket.itemservice.controller;
 
 import com.submarket.itemservice.dto.CategoryDto;
+import com.submarket.itemservice.dto.GroupDto;
 import com.submarket.itemservice.jpa.CategoryRepository;
 import com.submarket.itemservice.jpa.ItemRepository;
 import com.submarket.itemservice.jpa.entity.CategoryEntity;
 import com.submarket.itemservice.mapper.CategoryMapper;
+import com.submarket.itemservice.service.impl.GroupService;
+import com.submarket.itemservice.service.impl.ItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
@@ -21,6 +24,7 @@ public class MainController {
 
     private final Environment env;
     private final CategoryRepository categoryRepository;
+    private final ItemService itemService;
 
     @GetMapping("/health")
     public String health() {
@@ -30,21 +34,5 @@ public class MainController {
                 + ", port(server.port) : " + env.getProperty("server.port")
                 + ", token secret : " + env.getProperty("token.secret")
                 + ", token expiration time : " + env.getProperty("token.expiration_time");
-    }
-
-    @GetMapping("/test")
-    @Transactional
-    public CategoryEntity test() throws Exception {
-
-        Optional<CategoryEntity> category = categoryRepository.findById(1);
-
-        CategoryEntity categoryEntity = category.get();
-
-        CategoryDto categoryDto = new CategoryDto();
-
-        categoryDto = CategoryMapper.INSTANCE.categoryEntityToCategoryDto(categoryEntity);
-
-
-        return categoryEntity;
     }
 }

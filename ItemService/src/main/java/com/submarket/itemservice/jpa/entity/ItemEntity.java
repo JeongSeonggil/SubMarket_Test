@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -40,9 +41,6 @@ public class ItemEntity {
     @Column(nullable = false)
     private int itemStatus;
 
-//    @OneToMany(mappedBy = "item")
-//    private List<ItemReviewEntity> reviews;
-    
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JsonIgnore
     private CategoryEntity category;
@@ -51,5 +49,9 @@ public class ItemEntity {
     @JsonIgnore
     private GroupEntity group;
 
-    // TODO: 2022/05/11 Img 등록 추가 
+    // TODO: 2022/05/15 M : N 연결
+//    @OneToMany(mappedBy = "item")
+//    private List<ItemReviewEntity> reviews = new ArrayList<ItemReviewEntity>();
+
+    // TODO: 2022/05/11 Img 등록 추가
 }
