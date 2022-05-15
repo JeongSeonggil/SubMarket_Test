@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,31 +20,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @GetMapping("/category") // 그룹 정보 조회
-    public ResponseEntity<ResponseCategory> getCategoryInfo(@RequestBody RequestCategory requestCategory) throws Exception {
+    @GetMapping("/category/{categorySeq}") // 그룹 정보 조회
+    public ResponseEntity<CategoryDto> getCategoryInfo(@PathVariable int categorySeq) throws Exception {
         log.info(this.getClass().getName() + "getCategoryInfo Start!");
 
-        log.info("Request Seq : " + requestCategory.getCategorySeq());
-        log.info("Request Name : " + requestCategory.getCategoryName());
-
         CategoryDto pCategoryDto = new CategoryDto();
-        pCategoryDto.setCategorySeq(requestCategory.getCategorySeq());
-        pCategoryDto.setCategoryName(requestCategory.getCategoryName());
+        pCategoryDto.setCategorySeq(categorySeq);
 
-        CategoryEntity categoryDto = categoryService.getCategoryInfo(pCategoryDto);
+        CategoryDto categoryDto = categoryService.findItemInfoByCategory(pCategoryDto);
 
 
         if (categoryDto == null) {
             log.info("categoryDto is null");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        ResponseCategory responseCategory = new ResponseCategory();
-
-        requestCategory.setCategorySeq(categoryDto.getCategorySeq());
-        requestCategory.setCategoryName(categoryDto.getCategoryName());
 
         log.info(this.getClass().getName() + ".getCategoryInfo End!");
-        return ResponseEntity.ok().body(responseCategory);
+        return ResponseEntity.ok().body(categoryDto);
     }
 
 }
