@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,7 +20,7 @@ public interface ItemReviewRepository extends CrudRepository<ItemReviewEntity, I
     Optional<ItemReviewEntity> findById(Integer integer);
 
     @Transactional
-    ItemReviewEntity findByItem(ItemEntity item);
+    List<ItemReviewEntity> findByItem(ItemEntity item);
 
     @Transactional
     @Modifying

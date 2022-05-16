@@ -12,6 +12,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 @Service(value = "ItemReviewService")
@@ -67,5 +70,28 @@ public class ItemReviewService implements IItemReviewService {
 
         log.info(this.getClass().getName() + ".deleteReview End!");
         return 0;
+    }
+
+    @Override
+    @Transactional
+    public List<ItemReviewDto> findAllReviewInItem(int itemSeq) throws Exception {
+
+        ItemDto itemDto = new ItemDto();
+        itemDto.setItemSeq(itemSeq);
+        ItemDto rDto = itemService.findItemInfo(itemDto);
+
+        if (rDto == null) {
+            throw new RuntimeException("상품 정보가 없습니다");
+        }
+
+        List<ItemReviewDto> reviewDtoList = new LinkedList();
+
+        ItemEntity itemEntity = ItemMapper.INSTANCE.itemDtoToItemEntity(rDto);
+        List<ItemReviewEntity> itemReviewEntityList = itemReviewRepository.findByItem(itemEntity);
+
+        itemReviewEntityList.forEach(itemReviewEntity -> {
+            reviewDtoList.add(ItemReviewMapper.INSTANCE.itemReviewEntityToItemDto(itemReviewEntity));
+        });
+        return reviewDtoList;
     }
 }
