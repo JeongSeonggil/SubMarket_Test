@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -16,8 +18,13 @@ public class ItemController {
 
     // TODO: 2022/05/16 로직 추가
     @GetMapping("/items")
-    public ResponseEntity<Object> findAllItem() throws Exception {
-        return null;
+    public ResponseEntity<List<ItemDto>> findAllItem() throws Exception {
+        log.info(this.getClass().getName() + ".findAllItem Start");
+
+        List<ItemDto> itemDtoList = itemService.findAllItem();
+
+        log.info(this.getClass().getName() + ".findAllItem End");
+        return ResponseEntity.ok().body(itemDtoList);
     }
 
     @GetMapping("/items/{itemSeq}")
@@ -40,18 +47,41 @@ public class ItemController {
     }
 
     @PostMapping("/items")
-    public ResponseEntity<Object> saveItem() throws Exception {
-        return null;
+    public ResponseEntity<String> saveItem(@RequestBody ItemDto itemDto) throws Exception {
+        log.info(this.getClass().getName() + ".saveItem Start!");
+
+        int res = itemService.saveItem(itemDto);
+
+        log.info(this.getClass().getName() + ".saveItem End!");
+        return ResponseEntity.status(HttpStatus.CREATED).body("상품 등록 완료");
     }
 
-    @PatchMapping("/items")
-    public ResponseEntity<Object> modifyItem() throws Exception {
-        return null;
+    @PutMapping("/items")
+    public ResponseEntity<String> modifyItem(@RequestBody ItemDto itemDto) throws Exception {
+        // TODO: 2022-05-16 상품 이미지 로직 추가
+        log.info(this.getClass().getName());
+
+        itemService.modifyItem(itemDto);
+
+        return ResponseEntity.ok().body("상품 수정 완료");
     }
 
     @DeleteMapping("/items/{itemSeq}")
-    public ResponseEntity<Object> deleteItem(@PathVariable int itemSeq) throws Exception {
+    public ResponseEntity<String> offItem(@PathVariable int itemSeq) throws Exception {
         // TODO: 2022/05/16 비활성화, 사업자 인증
-        return null;
+        ItemDto itemDto = new ItemDto();
+        itemDto.setItemSeq(itemSeq);
+
+        itemService.offItem(itemDto);
+        return ResponseEntity.ok().body("비활성화 완료");
+    }
+
+    @PatchMapping("/items/{itemSeq}")
+    public ResponseEntity<String> onItem(@PathVariable int itemSeq) throws Exception {
+        ItemDto itemDto = new ItemDto();
+        itemDto.setItemSeq(itemSeq);
+
+        itemService.onItem(itemDto);
+        return ResponseEntity.ok().body("활성화 완료");
     }
 }
