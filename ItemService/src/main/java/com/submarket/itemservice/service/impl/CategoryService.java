@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 @Service("CategoryService")
@@ -40,6 +42,7 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
+    @Transactional
     public CategoryDto findCategory(CategoryDto categoryDto) throws Exception {
         log.info(this.getClass().getName() + ".findCategory Start");
         int categorySeq = categoryDto.getCategorySeq();
@@ -50,5 +53,22 @@ public class CategoryService implements ICategoryService {
 
         log.info(this.getClass().getName() + ".findCategory End");
         return rDto;
+    }
+
+    @Override
+    @Transactional
+    public List<CategoryDto> findAllCategory() throws Exception {
+        log.info(this.getClass().getName() + ".findAllCategory Start");
+
+        Iterable<CategoryEntity> categoryEntityList = categoryRepository.findAll();
+
+        List<CategoryDto> categoryDtoList = new LinkedList<>();
+
+        categoryEntityList.forEach(categoryEntity -> {
+            categoryDtoList.add(CategoryMapper.INSTANCE.categoryEntityToCategoryDto(categoryEntity));
+        });
+
+        log.info(this.getClass().getName() + ".findAllCategory End");
+        return categoryDtoList;
     }
 }

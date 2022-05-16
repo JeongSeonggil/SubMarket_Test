@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -22,7 +24,12 @@ public class CategoryController {
 
     @GetMapping("/category")
     public ResponseEntity<Object> findAllCategory() throws Exception {
-        return null;
+        log.info(this.getClass().getName() + ".findAllCategory Start");
+
+        List<CategoryDto> categoryDtoList = categoryService.findAllCategory();
+
+        log.info(this.getClass().getName() + ".findAllCategory End");
+        return ResponseEntity.ok().body(categoryDtoList);
     }
 
 
