@@ -14,13 +14,26 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @GetMapping("/category/{categorySeq}") // 그룹 정보 조회
+    @GetMapping("/category")
+    public ResponseEntity<Object> findAllCategory() throws Exception {
+        log.info(this.getClass().getName() + ".findAllCategory Start");
+
+        List<CategoryDto> categoryDtoList = categoryService.findAllCategory();
+
+        log.info(this.getClass().getName() + ".findAllCategory End");
+        return ResponseEntity.ok().body(categoryDtoList);
+    }
+
+
+    @GetMapping("/category/{categorySeq}") // 그룹에 들어있는 상품 조회
     public ResponseEntity<CategoryDto> getCategoryInfo(@PathVariable int categorySeq) throws Exception {
         log.info(this.getClass().getName() + "getCategoryInfo Start!");
 
@@ -38,5 +51,6 @@ public class CategoryController {
         log.info(this.getClass().getName() + ".getCategoryInfo End!");
         return ResponseEntity.ok().body(categoryDto);
     }
+
 
 }
