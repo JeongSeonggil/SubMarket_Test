@@ -17,4 +17,6 @@ public interface IItemService {
     int offItem(ItemDto itemDto) throws Exception;
 
     int onItem(ItemDto itemDto) throws Exception;
+
+    int modifyItem(ItemDto itemDto) throws Exception;
 }

@@ -124,4 +124,12 @@ public class ItemService implements IItemService {
         itemRepository.onItemStatus(itemSeq);
         return 1;
     }
+
+    @Override
+    public int modifyItem(ItemDto itemDto) throws Exception {
+
+        itemRepository.modifyItem(itemDto.getItemSeq(), itemDto.getItemContents(), itemDto.getItemPrice(),
+                itemDto.getItemCount(), itemDto.getItemTitle());
+        return 1;
+    }
 }

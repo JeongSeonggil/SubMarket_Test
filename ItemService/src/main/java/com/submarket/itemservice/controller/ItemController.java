@@ -57,12 +57,17 @@ public class ItemController {
     }
 
     @PutMapping("/items")
-    public ResponseEntity<Object> modifyItem() throws Exception {
-        return null;
+    public ResponseEntity<String> modifyItem(@RequestBody ItemDto itemDto) throws Exception {
+        // TODO: 2022-05-16 상품 이미지 로직 추가
+        log.info(this.getClass().getName());
+
+        itemService.modifyItem(itemDto);
+
+        return ResponseEntity.ok().body("상품 수정 완료");
     }
 
     @DeleteMapping("/items/{itemSeq}")
-    public ResponseEntity<Object> offItem(@PathVariable int itemSeq) throws Exception {
+    public ResponseEntity<String> offItem(@PathVariable int itemSeq) throws Exception {
         // TODO: 2022/05/16 비활성화, 사업자 인증
         ItemDto itemDto = new ItemDto();
         itemDto.setItemSeq(itemSeq);
@@ -72,7 +77,7 @@ public class ItemController {
     }
 
     @PatchMapping("/items/{itemSeq}")
-    public ResponseEntity<Object> onItem(@PathVariable int itemSeq) throws Exception {
+    public ResponseEntity<String> onItem(@PathVariable int itemSeq) throws Exception {
         ItemDto itemDto = new ItemDto();
         itemDto.setItemSeq(itemSeq);
 
