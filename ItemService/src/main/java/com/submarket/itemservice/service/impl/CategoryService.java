@@ -38,4 +38,17 @@ public class CategoryService implements ICategoryService {
         log.info(this.getClass().getName() + ".getCategoryInfo End!");
         return rCategoryDto;
     }
+
+    @Override
+    public CategoryDto findCategory(CategoryDto categoryDto) throws Exception {
+        log.info(this.getClass().getName() + ".findCategory Start");
+        int categorySeq = categoryDto.getCategorySeq();
+
+        Optional<CategoryEntity> categoryEntityOptional = categoryRepository.findById(categorySeq);
+
+        CategoryDto rDto = CategoryMapper.INSTANCE.categoryEntityToCategoryDto(categoryEntityOptional.get());
+
+        log.info(this.getClass().getName() + ".findCategory End");
+        return rDto;
+    }
 }
