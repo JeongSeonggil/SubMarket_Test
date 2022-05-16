@@ -32,4 +32,18 @@ public class ItemReviewController {
         return ResponseEntity.status(HttpStatus.CREATED).body("리뷰 작성 완료");
     }
 
+    @PatchMapping("/item/review/{reviewSeq}")
+    public ResponseEntity<String> modifyItemReview(@RequestBody ItemReviewDto itemReviewDto, @PathVariable int reviewSeq)
+        throws Exception {
+        log.info(this.getClass().getName() + ".modifyItemReview Start!");
+
+        itemReviewDto.setReviewSeq(reviewSeq);
+        int res = itemReviewService.modifyReview(itemReviewDto);
+
+
+        log.info(this.getClass().getName() + ".modifyItemReview End!");
+
+        return ResponseEntity.status(HttpStatus.OK).body("리뷰 변경 완료");
+    }
+
 }

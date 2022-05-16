@@ -42,4 +42,20 @@ public class ItemReviewService implements IItemReviewService {
         log.info(this.getClass().getName() + ".saveReview End!");
         return 1;
     }
+
+    @Override
+    public int modifyReview(ItemReviewDto itemReviewDto) throws Exception {
+        log.info(this.getClass().getName() + ".modifyReview Start!");
+
+        int reviewSeq = itemReviewDto.getReviewSeq();
+        String reviewContents = itemReviewDto.getReviewContents();
+        String reviewDate = itemReviewDto.getReviewDate();
+        int reviewStar = itemReviewDto.getReviewStar();
+
+
+        itemReviewRepository.modifyItemReview(reviewContents, reviewDate, reviewStar, reviewSeq);
+
+        log.info(this.getClass().getName() + ".modifyReview End!");
+        return 1;
+    }
 }
