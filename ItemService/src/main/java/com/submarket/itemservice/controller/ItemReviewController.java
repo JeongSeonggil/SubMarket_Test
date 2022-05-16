@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.Path;
+import java.util.List;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -44,6 +47,17 @@ public class ItemReviewController {
         log.info(this.getClass().getName() + ".modifyItemReview End!");
 
         return ResponseEntity.status(HttpStatus.OK).body("리뷰 변경 완료");
+    }
+
+    @GetMapping("/item/{itemSeq}/review")
+    public ResponseEntity<List<ItemReviewDto>> findItemReviewInItem(@PathVariable int itemSeq) throws Exception {
+        log.info(this.getClass().getName() + "findItemReviewInItem Start!");
+
+        List<ItemReviewDto> itemReviewDtoList = itemReviewService.findAllReviewInItem(itemSeq);
+
+        log.info(this.getClass().getName() + "findItemReviewInItem End!");
+
+        return ResponseEntity.ok().body(itemReviewDtoList);
     }
 
 }
