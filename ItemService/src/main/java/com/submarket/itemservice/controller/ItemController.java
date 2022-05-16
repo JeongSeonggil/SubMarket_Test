@@ -56,14 +56,27 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.CREATED).body("상품 등록 완료");
     }
 
-    @PatchMapping("/items")
+    @PutMapping("/items")
     public ResponseEntity<Object> modifyItem() throws Exception {
         return null;
     }
 
     @DeleteMapping("/items/{itemSeq}")
-    public ResponseEntity<Object> deleteItem(@PathVariable int itemSeq) throws Exception {
+    public ResponseEntity<Object> offItem(@PathVariable int itemSeq) throws Exception {
         // TODO: 2022/05/16 비활성화, 사업자 인증
-        return null;
+        ItemDto itemDto = new ItemDto();
+        itemDto.setItemSeq(itemSeq);
+
+        itemService.offItem(itemDto);
+        return ResponseEntity.ok().body("비활성화 완료");
+    }
+
+    @PatchMapping("/items/{itemSeq}")
+    public ResponseEntity<Object> onItem(@PathVariable int itemSeq) throws Exception {
+        ItemDto itemDto = new ItemDto();
+        itemDto.setItemSeq(itemSeq);
+
+        itemService.onItem(itemDto);
+        return ResponseEntity.ok().body("활성화 완료");
     }
 }

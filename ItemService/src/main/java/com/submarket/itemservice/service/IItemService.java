@@ -13,4 +13,8 @@ public interface IItemService {
     List<ItemDto> findAllItem() throws Exception;
 
     int saveItem(ItemDto itemDto) throws Exception;
+
+    int offItem(ItemDto itemDto) throws Exception;
+
+    int onItem(ItemDto itemDto) throws Exception;
 }
