@@ -62,6 +62,10 @@ public class ItemService implements IItemService {
 
         ItemDto rDto = ItemMapper.INSTANCE.itemEntityToItemDto(itemEntityOptional.get());
 
+        if (rDto == null) {
+            throw new RuntimeException("상품 정보를 찾을 수 없습니다");
+        }
+
         log.info(this.getClass().getName() + ".findItemInfo End!");
         return rDto;
     }
