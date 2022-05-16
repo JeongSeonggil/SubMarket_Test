@@ -1,11 +1,14 @@
 package com.submarket.itemservice.service.impl;
 
+import com.submarket.itemservice.dto.CategoryDto;
 import com.submarket.itemservice.dto.GroupDto;
 import com.submarket.itemservice.dto.ItemDto;
 import com.submarket.itemservice.jpa.GroupRepository;
 import com.submarket.itemservice.jpa.ItemRepository;
+import com.submarket.itemservice.jpa.entity.CategoryEntity;
 import com.submarket.itemservice.jpa.entity.GroupEntity;
 import com.submarket.itemservice.jpa.entity.ItemEntity;
+import com.submarket.itemservice.mapper.CategoryMapper;
 import com.submarket.itemservice.mapper.GroupMapper;
 import com.submarket.itemservice.mapper.ItemMapper;
 import com.submarket.itemservice.service.IItemService;
@@ -24,6 +27,7 @@ import java.util.Optional;
 public class ItemService implements IItemService {
     private final ItemRepository itemRepository;
     private final GroupRepository groupRepository;
+    private final CategoryService categoryService;
 
     @Override
     public GroupDto findItemInfoByGroup(GroupDto groupDto) throws Exception {
@@ -76,5 +80,28 @@ public class ItemService implements IItemService {
         log.info(this.getClass().getName() + "findAllItem End");
 
         return itemDtoList;
+    }
+
+    @Override
+    @Transactional
+    public int saveItem(ItemDto itemDto) throws Exception {
+        log.info(this.getClass().getName() + ".saveItem Start");
+
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setCategorySeq(itemDto.getCategorySeq());
+
+        CategoryDto rDto = categoryService.findCategory(categoryDto);
+
+        log.info("categoryName : " + rDto.getCategoryName());
+        CategoryEntity categoryEntity = CategoryMapper.INSTANCE.categoryDtoToCategoryEntity(rDto);
+
+        itemDto.setCategory(categoryEntity);
+
+        log.info("" + itemDto.getCategory());
+        ItemEntity itemEntity = ItemMapper.INSTANCE.itemDtoToItemEntity(itemDto);
+        itemRepository.save(itemEntity);
+
+        log.info(this.getClass().getName() + ".saveItem End");
+        return 1;
     }
 }

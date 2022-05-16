@@ -47,8 +47,13 @@ public class ItemController {
     }
 
     @PostMapping("/items")
-    public ResponseEntity<Object> saveItem() throws Exception {
-        return null;
+    public ResponseEntity<String> saveItem(@RequestBody ItemDto itemDto) throws Exception {
+        log.info(this.getClass().getName() + ".saveItem Start!");
+
+        int res = itemService.saveItem(itemDto);
+
+        log.info(this.getClass().getName() + ".saveItem End!");
+        return ResponseEntity.status(HttpStatus.CREATED).body("상품 등록 완료");
     }
 
     @PatchMapping("/items")

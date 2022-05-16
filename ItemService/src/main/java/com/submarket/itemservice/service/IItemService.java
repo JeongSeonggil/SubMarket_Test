@@ -11,4 +11,6 @@ public interface IItemService {
     ItemDto findItemInfo(ItemDto itemDto) throws Exception;
 
     List<ItemDto> findAllItem() throws Exception;
+
+    int saveItem(ItemDto itemDto) throws Exception;
 }

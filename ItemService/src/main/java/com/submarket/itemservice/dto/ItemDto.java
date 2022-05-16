@@ -1,5 +1,6 @@
 package com.submarket.itemservice.dto;
 
+import com.submarket.itemservice.jpa.entity.CategoryEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,9 @@ public class ItemDto {
 
     private int itemPrice;
     private int itemCount; // 상품 수
+
+    private int categorySeq;
+    private CategoryEntity category;
 
     private int itemStatus; // 활성화
 

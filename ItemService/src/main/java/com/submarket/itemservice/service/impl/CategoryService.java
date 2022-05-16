@@ -40,6 +40,7 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
+    @Transactional
     public CategoryDto findCategory(CategoryDto categoryDto) throws Exception {
         log.info(this.getClass().getName() + ".findCategory Start");
         int categorySeq = categoryDto.getCategorySeq();

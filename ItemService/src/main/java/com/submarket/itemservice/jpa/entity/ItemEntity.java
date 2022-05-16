@@ -46,7 +46,7 @@ public class ItemEntity {
     @JsonIgnore
     private CategoryEntity category;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private GroupEntity group;
 
