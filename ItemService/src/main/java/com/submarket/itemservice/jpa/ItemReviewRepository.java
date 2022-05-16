@@ -25,4 +25,5 @@ public interface ItemReviewRepository extends CrudRepository<ItemReviewEntity, I
     @Modifying
     @Query(value = "UPDATE item_review_info SET review_contents = :reviewContents, review_date = :reviewDate, review_star = :reviewStar WHERE review_seq = :reviewSeq", nativeQuery = true)
     void modifyItemReview(@Param("reviewContents") String reviewContents, @Param("reviewDate") String reviewDate, @Param("reviewStar") int reviewStar, @Param("reviewSeq") int reviewSeq);
+
 }

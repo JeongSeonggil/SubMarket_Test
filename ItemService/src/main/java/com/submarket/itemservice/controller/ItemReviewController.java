@@ -46,4 +46,18 @@ public class ItemReviewController {
         return ResponseEntity.status(HttpStatus.OK).body("리뷰 변경 완료");
     }
 
+    @DeleteMapping("/item/review/{reviewSeq}")
+    public ResponseEntity<String> deleteItemReview(@PathVariable int reviewSeq) throws Exception {
+        log.info(this.getClass().getName() + ".deleteReview Start!");
+
+        ItemReviewDto itemReviewDto = new ItemReviewDto();
+        itemReviewDto.setReviewSeq(reviewSeq);
+
+        itemReviewService.deleteReview(itemReviewDto);
+
+        log.info(this.getClass().getName() + ".deleteReview End!");
+
+        return ResponseEntity.status(HttpStatus.OK).body("리뷰 삭제 완료");
+    }
+
 }

@@ -58,4 +58,14 @@ public class ItemReviewService implements IItemReviewService {
         log.info(this.getClass().getName() + ".modifyReview End!");
         return 1;
     }
+
+    @Override
+    public int deleteReview(ItemReviewDto itemReviewDto) throws Exception {
+        log.info(this.getClass().getName() + ".deleteReview Start!");
+
+        itemReviewRepository.deleteById(itemReviewDto.getReviewSeq());
+
+        log.info(this.getClass().getName() + ".deleteReview End!");
+        return 0;
+    }
 }
