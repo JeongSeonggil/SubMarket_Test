@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -58,5 +60,21 @@ public class ItemService implements IItemService {
 
         log.info(this.getClass().getName() + ".findItemInfo End!");
         return rDto;
+    }
+
+    @Override
+    public List<ItemDto> findAllItem() throws Exception {
+        log.info(this.getClass().getName() + "findAllItem Start");
+
+        List<ItemDto> itemDtoList = new LinkedList<>();
+        Iterable<ItemEntity> itemEntityList = itemRepository.findAll();
+
+        itemEntityList.forEach(itemEntity -> {
+            itemDtoList.add(ItemMapper.INSTANCE.itemEntityToItemDto(itemEntity));
+        });
+
+        log.info(this.getClass().getName() + "findAllItem End");
+
+        return itemDtoList;
     }
 }

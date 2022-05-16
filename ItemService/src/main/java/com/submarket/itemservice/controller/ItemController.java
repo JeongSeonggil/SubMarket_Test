@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -16,8 +18,13 @@ public class ItemController {
 
     // TODO: 2022/05/16 로직 추가
     @GetMapping("/items")
-    public ResponseEntity<Object> findAllItem() throws Exception {
-        return null;
+    public ResponseEntity<List<ItemDto>> findAllItem() throws Exception {
+        log.info(this.getClass().getName() + ".findAllItem Start");
+
+        List<ItemDto> itemDtoList = itemService.findAllItem();
+
+        log.info(this.getClass().getName() + ".findAllItem End");
+        return ResponseEntity.ok().body(itemDtoList);
     }
 
     @GetMapping("/items/{itemSeq}")
